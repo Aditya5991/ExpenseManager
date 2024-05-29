@@ -44,7 +44,8 @@ namespace em
                 for (const DBModel_Expense& expense : expenses)
                     total += expense.Price;
 
-                m_Prices[category.Name] += total;
+                if (total != 0.0)
+                    m_Prices[category.Name] += total;
 
                 // need to pop the last condition so that category can be changed
                 cond.PopBack();
