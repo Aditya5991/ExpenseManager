@@ -20,10 +20,19 @@ namespace em::action_handler::cli
         model["name"] = options.at("name");
 
         auto table = databaseMgr.GetTable("categories");
-        if (!table->Insert(model))
+        bool isCategoryPresent = table->CheckIfExists("Name", model["name"].asString());
+        if (!isCategoryPresent)
         {
-            ERROR_LOG(ERROR_DB_INSERT_CATEGORY, model["name"].asString());
-            return Result::Create(StatusCode::DBError, std::format(ERROR_DB_INSERT_CATEGORY, model["name"].asString()));
+            if (!table->Insert(model))
+            {
+                ERROR_LOG(ERROR_DB_INSERT_CATEGORY, model["name"].asString());
+                return Result::Create(StatusCode::DBError, std::format(ERROR_DB_INSERT_CATEGORY, model["name"].asString()));
+            }
+        }
+        else
+        {
+            ERROR_LOG(ERROR_CATEGORY_ALREADY_EXIST, model["name"].asString());
+            return Result::Create(StatusCode::CategoryAlreayExists, std::format(ERROR_CATEGORY_ALREADY_EXIST, model["name"].asString()));
         }
 
         return Result::Create(StatusCode::Success);

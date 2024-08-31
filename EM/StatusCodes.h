@@ -31,6 +31,8 @@ namespace em
         AccountAlreadySelected,
         AccountDoesNotExist,
 
+        CategoryAlreayExists,
+
         Invalid
     };
 

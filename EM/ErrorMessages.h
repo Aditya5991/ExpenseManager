@@ -9,6 +9,7 @@
 #define ERROR_DB_INSERT_TAG                 "Failed to add Tag: {}"
 
 #define ERROR_CATEGORY_DOES_NOT_EXIST       "Category does not exist: {}"
+#define ERROR_CATEGORY_ALREADY_EXIST        "Category already exist: {}"
 #define ERROR_TAG_DOES_NOT_EXIST            "Tag does not exist: {}"
 #define ERROR_INVALID_ATTRIBUTE_TYPE        "Invalid Attribute Type: {}"
 
