@@ -9,6 +9,7 @@ namespace em
     enum class StatusCode
     {
         Success,
+        GeneralFailure,
 
         DisplayHelp,
 
@@ -30,7 +31,7 @@ namespace em
         AccountAlreadySelected,
         AccountDoesNotExist,
 
-        CategoryAlreayExists,
+        CategoryAlreadyExists,
 
         NotImplementedYet,
         Invalid

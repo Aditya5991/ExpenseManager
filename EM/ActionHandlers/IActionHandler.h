@@ -18,6 +18,11 @@ namespace em::action_handler
 			return std::make_shared<Result>(StatusCode::Success);
 		}
 
+		static ResultSPtr GeneralFailure(const std::string& message = "")
+		{
+			return std::make_shared<Result>(StatusCode::GeneralFailure, message);
+		}
+
 		static ResultSPtr Create(StatusCode statusCode, const std::string& message = "")
 		{
 			return std::make_shared<Result>(statusCode, message);

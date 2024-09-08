@@ -297,7 +297,7 @@ namespace em
             {
                 add(std::to_string(row.at("row_id").asInt()));
                 add(row.at("name").asString());
-                add(row.at("category").asString());
+                add(row.at("category")["name"].asString());
                 add(std::to_string(row.at("price").asDouble()));
                 add(row.at("date").asString());
 

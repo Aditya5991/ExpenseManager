@@ -13,44 +13,40 @@
 		{
 			"name" : "name",
 			"valueType" : "text",
-			"isPrimaryKey" : false,
-			"isNotNull" : true,
-			"isUnique" : false
+			"isNotNull" : true
 		},
 		{
-			"name" : "category",
-			"valueType" : "text",
-			"isPrimaryKey" : false,
-			"isNotNull" : true,
-			"isUnique" : false
+			"name" : "category_id",
+			"valueType" : "int",
+			"isForeignKey" : true,
+			"isNotNull" : true
 		},
 		{
 			"name" : "price",
 			"valueType" : "double",
-			"isPrimaryKey" : false,
-			"isNotNull" : true,
-			"isUnique" : false
+			"isNotNull" : true
 		},
 		{
 			"name" : "date",
-			"valueType" : "date",
-			"isPrimaryKey" : false,
-			"isNotNull" : false,
-			"isUnique" : false
+			"valueType" : "date"
 		},
 		{
 			"name" : "location",
 			"valueType" : "text",
-			"isPrimaryKey" : false,
-			"isNotNull" : true,
-			"isUnique" : false
+			"isNotNull" : true
 		},
 		{
 			"name" : "tags",
 			"valueType" : "text",
-			"isPrimaryKey" : false,
-			"isNotNull" : false,
-			"isUnique" : false
+			"isForeignKey" : true
+		}
+	],
+	"foreignKeyReferences" : 
+	[
+		{
+			"columnName" : "category_id",
+			"referenceTableName" : "categories",
+			"accessName" : "category"
 		}
 	]
 }

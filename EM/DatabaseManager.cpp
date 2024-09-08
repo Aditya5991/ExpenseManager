@@ -5,6 +5,8 @@
 #include "Utilities/Utils.h"
 #include "ConfigManager.h"
 #include "EM/Utils.h"
+#include "DBHandler/Migration.h"
+#include "AddCategoryIdForeignKeyMigration.h"
 
 namespace em
 {
@@ -49,6 +51,12 @@ namespace em
             }
 
         }
+    }
+
+     // public
+    void DatabaseManager::RunMigrations()
+    {
+        m_Database->RunMigration(AddCategoryIdForeignKeyMigration("AddCategoryIdForeignKey", "Added ForeignKey support, so updating expense tables!"));
     }
 
     // public

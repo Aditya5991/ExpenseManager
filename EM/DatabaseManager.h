@@ -50,6 +50,12 @@ namespace em
 		void RegisterExpenseTables();
 
 		/**
+		* Runs any newly added migrations on the database.
+		* If no migration is present an empty 'migrations' table will be created.
+		*/
+		void RunMigrations();
+
+		/**
 		* This function is used to switch account.
 		*
 		* @params [in] accountName

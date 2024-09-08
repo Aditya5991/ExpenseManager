@@ -32,7 +32,7 @@ namespace em::action_handler::cli
         else
         {
             ERROR_LOG(ERROR_CATEGORY_ALREADY_EXIST, model["name"].asString());
-            return Result::Create(StatusCode::CategoryAlreayExists, std::format(ERROR_CATEGORY_ALREADY_EXIST, model["name"].asString()));
+            return Result::Create(StatusCode::CategoryAlreadyExists, std::format(ERROR_CATEGORY_ALREADY_EXIST, model["name"].asString()));
         }
 
         return Result::Success();

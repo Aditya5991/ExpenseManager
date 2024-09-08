@@ -21,6 +21,12 @@ namespace em::action_handler::cli
         assert(commandName == "update");
 
         int rowId = std::atoi(options.at("row_id").c_str());
+
+        auto expenseTable = databaseMgr.GetTable(databaseMgr.GetCurrentExpenseTableName());
+        db::Model origModel;
+        if (!expenseTable->SelectById(origModel, rowId))
+            return Result::GeneralFailure(std::format("ERROR: Entity with rows_id - % d does not exist!", rowId));
+
         std::string attributeName = options.at("attributeName");
         std::string attributeValue = options.at("attributeValue");
 
@@ -28,14 +34,9 @@ namespace em::action_handler::cli
         if (validationResult->statusCode != StatusCode::Success)
             return validationResult;
 
-        auto expenseTable = databaseMgr.GetTable(databaseMgr.GetCurrentExpenseTableName());
-
-        db::Model origModel;
-        expenseTable->SelectById(origModel, rowId);
-
-        // if the same value is being updated, we can skip
-        if(origModel[attributeName] == attributeValue)
-            return Result::Success();
+        // TODO: handle foreign keys differently, not like this.
+        if (expenseTable->IsForeignKeyAccessName(attributeName))
+            HandleForeignKeyUpdate(attributeName, attributeValue);
 
         db::Model newModel = origModel;
         newModel[attributeName] = attributeValue;
@@ -49,8 +50,26 @@ namespace em::action_handler::cli
         return Result::Success();
     }
 
+    void Update::HandleForeignKeyUpdate(std::string& attributeName, std::string& attributeValue)
+    {
+        if (attributeName == "category")
+        {
+            // get the category_id and update it
+            db::Model categoryModel;
+            if (databaseMgr.GetTable("categories")->Select(categoryModel, *Condition_CategoryName::Create(attributeValue)))
+            {
+                attributeName = "category_id";
+                attributeValue = std::to_string(categoryModel["row_id"].asInt());
+            }
+        }
+    }
+
     ResultSPtr Update::Validate(const std::string& attributeName, const std::string& attributeValue)
     {
+        auto expenseTable = databaseMgr.GetTable(databaseMgr.GetCurrentExpenseTableName());
+        if (!expenseTable->IsForeignKeyAccessName(attributeName) && !expenseTable->IsValidColumnName(attributeName))
+            return Result::GeneralFailure(std::format("Invalid attributeName: '{}'", attributeName));
+
         // check Category, must exist in the database
         if (attributeName == "category")
         {
@@ -73,7 +92,6 @@ namespace em::action_handler::cli
         }
 
         // check tags, must exist in the database
-        
         if (attributeName == "tags")
         {
             auto tagsTable = databaseMgr.GetTable("tags");

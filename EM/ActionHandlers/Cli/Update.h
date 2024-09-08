@@ -17,7 +17,15 @@ namespace em::action_handler::cli
 			const std::map<std::string, std::string>& options) override;
 
 	private:
+		/**
+		* This function validates the 'atteibuteName' and 'attributeValue' params
+		*/
 		ResultSPtr Validate(const std::string& attributeName, const std::string& attributeValue);
+
+		/**
+		* This function handles the case where we are updating a parameter that is a foreign key. e.g. category.
+		*/
+		void HandleForeignKeyUpdate(std::string& attributeName, std::string& attributeValue);
 
 	};
 

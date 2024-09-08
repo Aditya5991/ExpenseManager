@@ -33,7 +33,7 @@ namespace em
 
         for (const db::Model& category : categories)
         {
-            cond.Add(Condition_Category::Create(category.at("name").asString()));
+            cond.Add(Condition_Category::Create(category.at("row_id").asInt()));
 
             std::vector<db::Model> expenses;
             expenseTable->Select(expenses, cond);

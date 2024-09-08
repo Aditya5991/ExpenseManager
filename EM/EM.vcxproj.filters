@@ -49,6 +49,9 @@
     <Filter Include="Source Files\Common">
       <UniqueIdentifier>{0ceb05ec-5d8d-4b6b-a87a-3c5970f0ba3e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Migrations">
+      <UniqueIdentifier>{e16e7ad4-98e3-4349-a89b-ea7111b85333}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ActionImplementor.cpp">
@@ -222,6 +225,9 @@
     </ClInclude>
     <ClInclude Include="ActionHandlers\Cli\Update.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AddCategoryIdForeignKeyMigration.h">
+      <Filter>Source Files\Migrations</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

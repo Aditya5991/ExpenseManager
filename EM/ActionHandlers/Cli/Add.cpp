@@ -24,10 +24,12 @@ namespace em::action_handler::cli
 
         db::Model model;
         // validate if the category exists
-        model["category"] = options.at("category");
-        if (!categoryTable->CheckIfExists("name", model["category"]))
-            return Result::Create(StatusCode::CategoryDoesNotExist, std::format(ERROR_CATEGORY_DOES_NOT_EXIST, model["category"].asString()));
+        db::Model categoryModel;
+        const std::string& category = options.at("category");
+        if (!categoryTable->CheckIfExists("name", category, &categoryModel))
+            return Result::Create(StatusCode::CategoryDoesNotExist, std::format(ERROR_CATEGORY_DOES_NOT_EXIST, category));
 
+        model["category_id"] = categoryModel["row_id"];
         model["name"] = options.at("name");
         model["price"] = std::stod(options.at("price"));
 

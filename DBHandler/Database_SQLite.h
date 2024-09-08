@@ -2,6 +2,7 @@
 
 #include "Common.h"
 #include "SQLite_Database.h"
+#include "Migration.h"
 
 BEGIN_NAMESPACE_DB
 
@@ -33,19 +34,25 @@ public:
     }
 
     std::shared_ptr<db::Table> CreateTableFromJson(const std::filesystem::path& filepath);
-
     std::shared_ptr<db::Table> GetTable(const std::string& tableName);
+
+    /**
+    * This function checks if the migration has already been run, if no, then it will call the Migration::Run() function
+    * and execute all the commands present there
+    */
+    void RunMigration(const Migration& migration);
 
     // queries
     SQLite::Column ExecAndGet(const std::string& query);
-
     bool ExecQuery(const std::string& query);
-    std::shared_ptr<SQLite::Statement> Select(const std::string& query);
 
     const std::string GetName() const { return m_DBImpl->getFilename(); }
     int GetOpenMode() const { return m_OpenMode; }
 
 private:
+    std::vector<ColumnProperty> GetMigrationTableColumnProperties();
+    void CreateMigrationTable();
+
     SQLite::Database* GetImpl() { return m_DBImpl; }
     const SQLite::Database* GetImpl() const { return m_DBImpl; }
 

@@ -94,7 +94,14 @@ namespace em::action_handler::cli
             std::vector<std::string> categories;
             em::utils::string::SplitString(options.at("ignoreCategory"), categories);
             for (const std::string& category : categories)
-                finalCondition.Add(Condition_IgnoreCategory::Create(category));
+            {
+                auto categoriesTable = databaseMgr.GetTable("categories");
+                db::Model categoryModel;
+                if (!categoriesTable->CheckIfExists("name", category, &categoryModel))
+                    continue;
+
+                finalCondition.Add(Condition_IgnoreCategory::Create(categoryModel["row_id"]));
+            }
         }
 
         db::Clause_OrderBy orderBy("date", db::Clause_OrderBy::DESCENDING);
@@ -204,14 +211,15 @@ namespace em::action_handler::cli
         for (const std::string& category : categories)
         {
             // check if the category is valid.
-            if (!table->CheckIfExists("name", category))
+            db::Model categoryModel;
+            if (!table->CheckIfExists("name", category, &categoryModel))
             {
                 return em::action_handler::Result::Create(
                     StatusCode::CategoryDoesNotExist,
                     std::format(ERROR_CATEGORY_DOES_NOT_EXIST, category));
             }
 
-            categoryConditions->Add(Condition_Category::Create(category));
+            categoryConditions->Add(Condition_Category::Create(categoryModel["row_id"]));
         }
 
         finalCondition.Add(categoryConditions);

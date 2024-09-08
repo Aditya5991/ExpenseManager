@@ -180,6 +180,7 @@ void InitializeDatabase()
     std::string databaseName = root["name"].asString();
 
     em::DatabaseManager::Create(databaseName.c_str());
+    em::DatabaseManager::GetInstance().RunMigrations();
     em::DatabaseManager::GetInstance().RegisterExpenseTables();
 }
 
@@ -208,6 +209,18 @@ void Initialize()
     InitializeActionImplementor();
 }
 
+void Test()
+{
+    std::vector<db::Model> rows;
+    auto table = em::DatabaseManager::GetInstance().GetTable("reminder");
+    table->Select(rows);
+    auto row = rows[0];
+    std::cout << row["name"].asString() << std::endl;
+    std::cout << row["categoryId"].asInt() << std::endl;
+    std::cout << row["category"].asModel()["name"].asString() << std::endl;
+    auto category = rows[0]["category"];
+}
+
 int main(int argc, char** argv)
 {
     try
@@ -220,6 +233,12 @@ int main(int argc, char** argv)
             std::string commandStr;
             std::vector<std::string> args;
             GetCommandString(commandStr, args);
+
+            if (commandStr == "test")
+            {
+                Test();
+                continue;
+            }
 
             if (commandStr.empty())
                 continue;

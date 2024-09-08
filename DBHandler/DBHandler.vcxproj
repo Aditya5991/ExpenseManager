@@ -143,6 +143,7 @@
     <ClInclude Include="Common.h" />
     <ClInclude Include="Condition.h" />
     <ClInclude Include="Database_SQLite.h" />
+    <ClInclude Include="Migration.h" />
     <ClInclude Include="QueryGenerator.h" />
     <ClInclude Include="Table.h" />
     <ClInclude Include="pch.h" />

@@ -15,6 +15,12 @@ BEGIN_NAMESPACE_DB
 
 class Database_SQLite;
 class Clause_OrderBy;
+struct DBValue;
+
+
+class Model : public std::unordered_map<std::string, DBValue>
+{
+};
 
 struct DBValue
 {
@@ -25,10 +31,22 @@ struct DBValue
     double asDouble() const;
     int asInt() const;
     bool asBool() const;
+    Model asModel() const;
 
     operator std::string()
     {
         return asString();
+    }
+
+    operator int()
+    {
+        return asInt();
+    }
+
+    DBValue operator[](const std::string& key) const
+    {
+        Model model = asModel();
+        return model[key];
     }
 
     template<typename ValueType>
@@ -100,14 +118,14 @@ private:
     std::any m_Value;
 };
 
-class Model : public std::unordered_map<std::string, DBValue>
-{
-};
 
+/**
+* RAII, will create the table in database on creating the Table object.
+*/
 class Table
 {
 public:
-    Table(Database_SQLite& database, const std::string& tablename, const std::vector<ColumnProperty>& columnProps);
+    Table(Database_SQLite& database, const std::string& tablename, const std::vector<ColumnProperty>& columnProps, const std::vector<ForeignKeyReference>& foreignKeyRefs = {});
     virtual ~Table() = default;
 
     const std::string& GetName() const { return m_Name; }
@@ -115,28 +133,37 @@ public:
     bool ExecQuery(const std::string& query);
 
     double SumOf(const std::string& columnName, const Condition& condition = Condition());
-    bool CheckIfExists(const std::string& columnName, const std::string& value, Condition::Type compareType = Condition::Type::EQUALS);
+    bool CheckIfExists(
+        const std::string& columnName, 
+        const std::string& value, 
+        Model* model = nullptr, 
+        Condition::Type compareType = Condition::Type::EQUALS);
     bool CheckIfExists(const Condition& condition);
-    bool Select(std::vector<Model>& rows, const Condition& condition = Condition(), const Clause_OrderBy& orderBy = Clause_OrderBy());
-    bool SelectById(Model& model, int id);
+    bool Select(std::vector<Model>& rows, const Condition& condition = Condition(), const Clause_OrderBy& orderBy = Clause_OrderBy()) const;
+    bool Select(Model& model, const Condition& condition = Condition(), const Clause_OrderBy& orderBy = Clause_OrderBy()) const;
+    bool SelectById(Model& model, int id) const;
     bool Insert(const Model& model);
     bool Update(const Model& origModel, const Model& model);
     bool Delete(const Condition& condition);
+    bool IsForeignKey(const std::string& columnName, ForeignKeyReference* fkRef = nullptr) const;
+    bool IsForeignKeyAccessName(const std::string& accessName, ForeignKeyReference* fkRef = nullptr) const;
+    bool IsValidColumnName(const std::string& columnName) const;
 
     void SetColumnProperties(const std::vector<ColumnProperty>& columns) { m_ColumnProperties = columns; }
     const std::vector<ColumnProperty>& GetColumnProperties() const { return m_ColumnProperties; }
+    Database_SQLite& GetDatabase() const { return m_Database; }
 
 protected:
     void CreateTable();
     void ValidateColumns();
     std::vector<std::string> GetColumnNamesInDB() const;
 
-    Database_SQLite& GetDatabase() const { return m_Database; }
 
 protected:
     Database_SQLite&            m_Database;
     std::string                 m_Name;
     std::vector<ColumnProperty> m_ColumnProperties;
+    std::vector<ForeignKeyReference> m_ForeignKeyReferences;
 };
 
 END_NAMESPACE_DB
