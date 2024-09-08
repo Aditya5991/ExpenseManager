@@ -34,9 +34,9 @@ namespace em::action_handler::cli
         if (validationResult->statusCode != StatusCode::Success)
             return validationResult;
 
-        // TODO: handle foreign keys differently, not like this.
-        if (expenseTable->IsForeignKeyAccessName(attributeName))
-            HandleForeignKeyUpdate(attributeName, attributeValue);
+        db::ForeignKeyReference fkRef;
+        if (expenseTable->IsForeignKeyAccessName(attributeName, &fkRef))
+            HandleForeignKeyUpdate(attributeName, attributeValue, fkRef);
 
         db::Model newModel = origModel;
         newModel[attributeName] = attributeValue;
@@ -50,7 +50,8 @@ namespace em::action_handler::cli
         return Result::Success();
     }
 
-    void Update::HandleForeignKeyUpdate(std::string& attributeName, std::string& attributeValue)
+    // private
+    void Update::HandleForeignKeyUpdate(std::string& attributeName, std::string& attributeValue, db::ForeignKeyReference& fkRef) const
     {
         if (attributeName == "category")
         {
@@ -58,12 +59,13 @@ namespace em::action_handler::cli
             db::Model categoryModel;
             if (databaseMgr.GetTable("categories")->Select(categoryModel, *Condition_CategoryName::Create(attributeValue)))
             {
-                attributeName = "category_id";
+                attributeName = fkRef.ColumnName;
                 attributeValue = std::to_string(categoryModel["row_id"].asInt());
             }
         }
     }
 
+    // private
     ResultSPtr Update::Validate(const std::string& attributeName, const std::string& attributeValue)
     {
         auto expenseTable = databaseMgr.GetTable(databaseMgr.GetCurrentExpenseTableName());

@@ -2,6 +2,8 @@
 
 #include "../IActionHandler.h"
 
+namespace db { class ForeignKeyReference; }
+
 namespace em::action_handler::cli
 {
 
@@ -25,7 +27,7 @@ namespace em::action_handler::cli
 		/**
 		* This function handles the case where we are updating a parameter that is a foreign key. e.g. category.
 		*/
-		void HandleForeignKeyUpdate(std::string& attributeName, std::string& attributeValue);
+		void HandleForeignKeyUpdate(std::string& attributeName, std::string& attributeValue, db::ForeignKeyReference& fkRef) const;
 
 	};
 
