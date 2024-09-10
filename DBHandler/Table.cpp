@@ -153,7 +153,7 @@ bool Table::Select(std::vector<Model>& rows, const Condition& condition, const C
             }
         }
 
-        return rows.size() > 0;
+        return true;
     }
     catch (std::exception& ex)
     {
