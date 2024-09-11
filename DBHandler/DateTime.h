@@ -14,7 +14,7 @@ class DateTime
 public:
     DateTime(int year, int month, int day, char separator = '-');
     DateTime(const std::string& dateStr, char separator = '-');
-    DateTime(tm t);
+    DateTime(tm t, char separator = '-');
 
     bool operator () (const DateTime& d1, const DateTime& d2) const;
     bool operator < (const DateTime& other) const;

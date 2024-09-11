@@ -157,8 +157,7 @@ namespace em::action_handler::cli
         std::sort(rows.begin(), rows.end(),
             [](db::Model& e1, db::Model& e2)
             {
-                return e1["price"].asDouble() > e2["price"].asDouble();
-                //return std::strcmp(e1["category"].asString().c_str(), e2["category"].asString().c_str()) < 0;
+                return e1["date"].asDateTime() < e2["date"].asDateTime();
             });
 
         const std::string& currentAccountName = em::account::Manager::GetInstance().GetCurrentAccount()->GetName();

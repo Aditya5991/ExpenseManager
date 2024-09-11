@@ -5,14 +5,15 @@
 
 BEGIN_NAMESPACE_DB
 
-DateTime::DateTime(tm t)
+DateTime::DateTime(tm t, char separator)
+    :m_Second(t.tm_sec)
+    , m_Minute(t.tm_min)
+    , m_Hour(t.tm_hour)
+    , m_Day(t.tm_mday)
+    , m_Month(t.tm_mon + 1)
+    , m_Year(t.tm_year + 1900)
+    , m_Separator(separator)
 {
-    m_Second = t.tm_sec;
-    m_Minute = t.tm_min;
-    m_Hour = t.tm_hour;
-    m_Day = t.tm_mday;
-    m_Month = t.tm_mon + 1;
-    m_Year = t.tm_year + 1900;
 }
 
 DateTime::DateTime(int year, int month, int day, char separator)
@@ -55,21 +56,18 @@ bool DateTime::operator < (const DateTime& other) const
     if (m_Month != other.m_Month)
         return m_Month < other.m_Month;
 
-    if (m_Day != other.m_Day)
-        return m_Day < other.m_Day;
-
-    if (m_Hour != other.m_Hour)
-        return m_Hour < other.m_Hour;
-
-    if (m_Minute != other.m_Minute)
-        return m_Minute < other.m_Minute;
-
-    return m_Second < other.m_Second;
+    return m_Day < other.m_Day;
 }
 
 bool DateTime::operator > (const DateTime& other) const
 {
-    return !(*this < (other));
+    if (m_Year != other.m_Year)
+        return m_Year > other.m_Year;
+
+    if (m_Month != other.m_Month)
+        return m_Month > other.m_Month;
+
+    return m_Day > other.m_Day;
 }
 
 bool DateTime::operator==(const DateTime& other) const

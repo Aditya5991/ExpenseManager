@@ -3,6 +3,7 @@
 #include "Condition.h"
 #include "ColumnProperty.h"
 #include "Clause.h"
+#include "DateTime.h"
 
 #include <format>
 #include <any>
@@ -32,6 +33,7 @@ struct DBValue
     int asInt() const;
     bool asBool() const;
     Model asModel() const;
+    DateTime asDateTime() const;
 
     operator std::string()
     {

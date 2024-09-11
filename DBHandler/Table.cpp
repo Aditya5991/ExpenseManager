@@ -42,6 +42,14 @@ Model DBValue::asModel() const
     return std::any_cast<Model>(m_Value);
 }
 
+DateTime DBValue::asDateTime() const
+{
+    if (m_Value.type() != typeid(std::string))
+        throw std::exception("EXCEPTION: Invalid DateTime format");
+
+    return DateTime(std::any_cast<std::string>(m_Value));
+}
+
 /**************************************************/
 /*                 TableBase                      */
 /**************************************************/
