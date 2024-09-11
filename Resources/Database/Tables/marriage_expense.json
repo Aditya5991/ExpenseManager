@@ -1,52 +1,50 @@
 {
-	"name" : "marriage_expense",
-	"columns" : 
-	[
+	"name": "marriage_expense",
+	"columns": [
 		{
-			"name" : "row_id",
-			"valueType" : "integer",
-			"isPrimaryKey" : true,
-			"isNotNull" : false,
-			"isUnique" : true,
-			"autoIncrement" : false
+			"name": "row_id",
+			"valueType": "integer",
+			"isPrimaryKey": true,
+			"isNotNull": false,
+			"isUnique": true,
+			"autoIncrement": false
 		},
 		{
-			"name" : "name",
-			"valueType" : "text",
-			"isNotNull" : true
+			"name": "name",
+			"valueType": "text",
+			"isNotNull": true
 		},
 		{
-			"name" : "category_id",
-			"valueType" : "int",
-			"isForeignKey" : true,
-			"isNotNull" : true
+			"name": "category_id",
+			"valueType": "int",
+			"isForeignKey": true,
+			"isNotNull": true
 		},
 		{
-			"name" : "price",
-			"valueType" : "double",
-			"isNotNull" : true
+			"name": "price",
+			"valueType": "double",
+			"isNotNull": true
 		},
 		{
-			"name" : "date",
-			"valueType" : "date"
+			"name": "date",
+			"valueType": "date"
 		},
 		{
-			"name" : "location",
-			"valueType" : "text",
-			"isNotNull" : true
+			"name": "location",
+			"valueType": "text",
+			"isNotNull": true
 		},
 		{
-			"name" : "tags",
-			"valueType" : "text",
-			"isForeignKey" : true
+			"name": "tags",
+			"valueType": "text",
+			"isForeignKey": true
 		}
 	],
-	"foreignKeyReferences" : 
-	[
+	"foreignKeyReferences": [
 		{
-			"columnName" : "category_id",
-			"referenceTableName" : "categories",
-			"accessName" : "category"
+			"columnName": "category_id",
+			"referenceTableName": "categories",
+			"accessName": "category"
 		}
 	]
 }

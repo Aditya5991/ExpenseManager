@@ -84,7 +84,7 @@ namespace em
         switch (option)
         {
         case Option::TODAY:
-            cond.Add(Condition_Date::Create(db::util::GetCurrentDate()));
+            cond.Add(Condition_Date::Create(db::DateTime::GetCurrentDate().AsString()));
             break;
         case Option::MONTH:
             cond.Add(Condition_Month::Create(month));

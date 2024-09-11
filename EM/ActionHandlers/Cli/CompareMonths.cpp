@@ -20,7 +20,7 @@ namespace em::action_handler::cli
 
         int startMonth = 1;
         int endMonth = 12;
-        std::string year = db::util::GetThisYear();
+        std::string year = db::DateTime::GetThisYear();
         if (options.contains("range"))
         {
             bool isValid = ValidateRangeParameter(options.at("range"), startMonth, endMonth);

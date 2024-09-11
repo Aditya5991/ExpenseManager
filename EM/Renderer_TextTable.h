@@ -1,13 +1,25 @@
 #pragma once
 
 #include "DBHandler/Table.h"
+#include "DBHandler/DateTime.h"
 #include "TextTable.h"
 #include "ReportHandler.h"
 #include <unordered_map>
 
 namespace em
 {
+    class Renderer_ExpenseTable_ByDate
+    {
+    public:
 
+        static void Render(const std::map<db::DateTime, double>& pricesByDate)
+        {
+            printf("\n Total Rows : %zd", pricesByDate.size());
+
+            TextTable_Expense_ByDate t(pricesByDate);
+            t.Print();
+        }
+    };
 
     /**
     * Helper class that can be used to display data from DBTable_Expense in the form of table for CLI.

@@ -1,12 +1,12 @@
 {
-  "default" : {
-	  "location" : "Amravati",
-	  "account"	: "household"
-  },
-  "validDatabaseNames" : [
-	"household",
-	"personal",
-	"marriage",
-	"all"
-  ]
+	"default": {
+		"location": "Amravati",
+		"account": "household"
+	},
+	"validDatabaseNames": [
+		"household",
+		"personal",
+		"marriage",
+		"all"
+	]
 }

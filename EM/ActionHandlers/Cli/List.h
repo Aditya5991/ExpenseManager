@@ -6,6 +6,7 @@ namespace db
 {
 	class Condition;
 	class Clause_OrderBy;
+	class Model;
 }
 
 namespace em::action_handler::cli
@@ -26,7 +27,19 @@ namespace em::action_handler::cli
 			const std::unordered_set<std::string>& flags,
 			const std::map<std::string, std::string>& options) override;
 
-	protected:
+		/**
+		* This function is used to handle the byDate flag
+		* 
+		* @params [in] cond
+		*		Conditions that will be used to filter the data.
+		*
+		* @params [in] orderBy
+		*		Determines ordering or the rows.
+		* 
+		* @return
+		*		Object of ResultSPtr that contains the result details on execution of the function.
+		*/
+		virtual em::action_handler::ResultSPtr DisplayByDate(const db::Condition& cond, const db::Clause_OrderBy& orderBy) const;
 
 		/**
 		* This function retrieves the data from the Database Table, and renders it to the console.
@@ -77,6 +90,17 @@ namespace em::action_handler::cli
 		*		Pointer to the new db::Condition object
 		*/
 		db::Condition* CreateIgnoreTagsCondition(const std::string& commaSeparatedTagsToIgnore);
+
+		/**
+		* This helper function fills the 'rows' with the required expenses depending on 'cond' and 'orderBy'
+		* 
+		* @params [in] cond
+		*		Conditions that will be used to filter the data.
+		*
+		* @params [in] orderBy
+		*		Determines ordering or the rows.
+		*/
+		void GetExpenses(std::vector<db::Model>& rows, const db::Condition& cond, const db::Clause_OrderBy& orderBy) const;
 
 	};
 

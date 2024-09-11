@@ -55,13 +55,13 @@ namespace em::action_handler::cli
         else if (flags.contains("thisMonth"))
         {
             option = ReportHandler::MONTH;
-            month = db::util::GetThisMonth();
+            month = db::DateTime::GetThisMonth();
         }
         // check if --thisYear is specified
         else if (flags.contains("thisYear"))
         {
             option = ReportHandler::YEAR;
-            year = db::util::GetThisYear();
+            year = db::DateTime::GetThisYear();
         }
 
         em::utils::date::FixMonthName(month);

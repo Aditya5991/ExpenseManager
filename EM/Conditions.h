@@ -2,6 +2,7 @@
 
 #include "DBHandler/Condition.h"
 #include "DBHandler/Util.h"
+#include "DBHandler/DateTime.h"
 
 namespace em
 {
@@ -49,7 +50,7 @@ namespace em
     class Condition_Month : public db::Condition
     {
     public:
-        static db::Condition* Create(const std::string& month, const std::string year = db::util::GetThisYear())
+        static db::Condition* Create(const std::string& month, const std::string year = db::DateTime::GetThisYear())
         {
             return new db::Condition("date", std::format("{}-{}-%", year, month), db::Condition::Type::LIKE);
         }

@@ -36,9 +36,9 @@ namespace em::action_handler::cli
         model["location"] = options.contains("location") ? options.at("location") : ConfigManager::GetInstance().GetDefaultLocation();
 
         if (flags.contains("yesterday"))
-            model["date"] = db::util::GetYesterdayDate();
+            model["date"] = db::DateTime::GetYesterdayDate().AsString();
         else
-            model["date"] = options.contains("date") ? options.at("date") : db::util::GetCurrentDate();
+            model["date"] = options.contains("date") ? options.at("date") : db::DateTime::GetCurrentDate().AsString();
 
         if (options.contains("tags"))
         {

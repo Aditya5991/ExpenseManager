@@ -10,6 +10,7 @@
 #include "ReportHandler.h"
 #include "Utils.h"
 #include "DBHandler/Table.h"
+#include "DBHandler/DateTime.h"
 
 #ifdef TEXTTABLE_ENCODE_MULTIBYTE_STRINGS
 #include <clocale>
@@ -317,6 +318,17 @@ namespace em
         }
     };
 
+    class TextTable_Expense_ByDate : public TextTable
+    {
+    public:
+        TextTable_Expense_ByDate(const std::map<db::DateTime, double>& pricesByDate)
+            : TextTable()
+        {
+            add("DATE").add("PRICE").endOfRow();
+            for (auto [date, price] : pricesByDate)
+                add(date.AsString()).add(std::to_string(price)).endOfRow();
+        }
+    };
 
     class TextTable_Category : public TextTable
     {

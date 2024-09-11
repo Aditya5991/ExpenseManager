@@ -2,7 +2,7 @@
 
 #include "../IActionHandler.h"
 
-namespace db { class ForeignKeyReference; }
+namespace db { struct ForeignKeyReference; }
 
 namespace em::action_handler::cli
 {

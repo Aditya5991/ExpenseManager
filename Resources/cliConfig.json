@@ -1,289 +1,293 @@
 {
-  "commands" : [
-	{
-		"name": "add",
-		"parameters": [
-			{
-				"name" : "name",
-				"optionType" : "text",
-				"helperMessage" : "Name of the Expense.",
-				"isMandatory" : true,
-				"inOrderIndex" : 1
-			},
-			{
-				"name" : "category",
-				"optionType" : "alphaNumeric",
-				"helperMessage" : "Name of the Category.",
-				"isMandatory" : true,
-				"inOrderIndex" : 2
-			},
-			{
-				"name" : "price",
-				"optionType" : "double",
-				"helperMessage" : "Price of the Expense.",
-				"isMandatory" : true,
-				"inOrderIndex" : 3
-			},
-			{
-				"name" : "date",
-				"optionType" : "date",
-				"helperMessage" : "Custom Date(YYYY-MM-DD) to add the Expense."
-			},
-			{
-				"name" : "location",
-				"optionType" : "text",
-				"helperMessage" : "Custom Location to add the Expense."
-			},
-			{
-				"name" : "tags",
-				"optionType" : "text",
-				"helperMessage" : "Custom tags to add the Expense."
-			}
-		],
-		"flags": [
-			{
-				"name" : "yesterday",
-				"helperMessage" : "Add expense for the previous day."
-			}
-		]
-	},
-	{
-		"name": "update",
-		"parameters": [
-			{
-				"name" : "row_id",
-				"optionType" : "integer",
-				"helperMessage" : "Id of the expense.",
-				"isMandatory" : true,
-				"inOrderIndex" : 1
-			},
-			{
-				"name" : "attributeName",
-				"optionType" : "text",
-				"helperMessage" : "Name of the Attribute to update.",
-				"isMandatory" : true,
-				"inOrderIndex" : 2
-			},
-			{
-				"name" : "attributeValue",
-				"optionType" : "text",
-				"helperMessage" : "Value of the Attribute to update.",
-				"isMandatory" : true,
-				"inOrderIndex" : 3
-			}
-		]
-	},
-	{
-		"name": "addCategory",
-		"parameters": [
-			{
-				"name" : "name",
-				"optionType" : "alphaNumeric",
-				"helperMessage" : "Name of the Category.",
-				"isMandatory" : true,
-				"inOrderIndex" : 1
-			}
-		]
-	},
-	{
-		"name": "list",
-		"parameters": [
-			{
-				"name" : "name",
-				"optionType" : "text",
-				"helperMessage" : "Filters by Regex for Name."
-			},
-			{
-				"name" : "category",
-				"optionType" : "text",
-				"helperMessage" : "Filters by Category.(comma separated)"
-			},
-			{
-				"name" : "date",
-				"optionType" : "date",
-				"helperMessage" : "Filters by Specific Date(YYYY-MM-DD)."
-			},
-			{
-				"name" : "month",
-				"optionType" : "integer",
-				"helperMessage" : "Filters by Month."
-			},
-			{
-				"name" : "year",
-				"optionType" : "integer",
-				"helperMessage" : "Filters by Year."
-			},
-			{
-				"name" : "location",
-				"optionType" : "text",
-				"helperMessage" : "Filters by Location."
-			},
-			{
-				"name" : "ignoreCategory",
-				"optionType" : "text",
-				"helperMessage" : "Ignores records of these categories(comma separated)."
-			},
-			{
-				"name" : "tags",
-				"optionType" : "text",
-				"helperMessage" : "Filter by Tags."
-			},
-			{
-				"name" : "ignoreTags",
-				"optionType" : "text",
-				"helperMessage" : "Ignores records with the give Tags."
-			}
-		],
-		"flags": [
-			{
-				"name" : "categories",
-				"helperMessage" : "Lists all the available categories."
-			},
-			{
-				"name" : "today",
-				"helperMessage" : "Lists today's Expenses."
-			},
-			{
-				"name" : "yesterday",
-				"helperMessage" : "Lists yesterday's Expenses."
-			},
-			{
-				"name" : "thisMonth",
-				"helperMessage" : "Lists this Month's Expenses."
-			},
-			{
-				"name" : "thisYear",
-				"helperMessage" : "Lists this Year's Expenses."
-			},
-			{
-				"name" : "ascending",
-				"helperMessage" : "Lists in ascending order of date."
-			},
-			{
-				"name" : "showLocation",
-				"helperMessage" : "Lists the expenses with the location column."
-			},
-			{
-				"name" : "showAccount",
-				"helperMessage" : "Lists the expenses with the account column."
-			},
-			{
-				"name" : "showTags",
-				"helperMessage" : "Lists the expenses with the tags column."
-			},
-			{
-				"name" : "tags",
-				"helperMessage" : "Lists all the available tags."
-			},
-			{
-				"name" : "excludeTags",
-				"helperMessage" : "Lists all expenses with no tags."
-			}
-		]
-	},
-	{
-		"name": "remove",
-		"parameters": [
-			{
-				"name" : "row_id",
-				"optionType" : "text",
-				"helperMessage" : "Id of the rows to be removed.",
-				"isMandatory" : true,
-				"inOrderIndex" : 1
-			}
-		]
-	},
-	{
-		"name": "report",
-		"parameters": [
-			{
-				"name" : "month",
-				"optionType" : "integer",
-				"helperMessage" : "Custom Month's Report."
-			},
-			{
-				"name" : "year",
-				"optionType" : "integer",
-				"helperMessage" : "Custom Year's Report."
-			}
-		],
-		"flags": [
-			{
-				"name" : "today",
-				"helperMessage" : "Today's Report."
-			},
-			{
-				"name" : "thisMonth",
-				"helperMessage" : "This Month's Report."
-			},
-			{
-				"name" : "thisYear",
-				"helperMessage" : "This Year's Report."
-			}
-		]
-	},
-	{
-		"name": "compareMonths",
-		"parameters": [
-			{
-				"name" : "range",
-				"optionType" : "text",
-				"helperMessage" : "Range of months to compare (eg. month1:month2)."
-			},
-			{
-				"name" : "year",
-				"optionType" : "integer",
-				"helperMessage" : "Show records of all months of the 'year'"
-			}
-		]
-	},
-	{
-		"name": "switchAccount",
-		"parameters": [
-			{
-				"name" : "accountName",
-				"optionType" : "text",
-				"helperMessage" : "Name of the account to switch to.",
-				"isMandatory" : true,
-				"inOrderIndex" : 1
-			}
-		]
-	},
-	{
-		"name": "addTags",
-		"parameters": [
-			{
-				"name" : "names",
-				"optionType" : "text",
-				"helperMessage" : "Comma separated names of the tags to be added.",
-				"isMandatory" : true,
-				"inOrderIndex" : 1
-			}
-		]
-	},
-	{
-		"name": "removeTags",
-		"parameters": [
-			{
-				"name" : "ids",
-				"optionType" : "text",
-				"helperMessage" : "Comma separated ids of the tags to be removed.",
-				"isMandatory" : true,
-				"inOrderIndex" : 1
-			}
-		]
-	},
-	{
-		"name": "git-push"
-	},
-	{
-		"name": "cls"
-	},
-	{
-		"name": "clear-screen"
-	},
-	{
-		"name": "help"
-	}
-  ]
+	"commands": [
+		{
+			"name": "add",
+			"parameters": [
+				{
+					"name": "name",
+					"optionType": "text",
+					"helperMessage": "Name of the Expense.",
+					"isMandatory": true,
+					"inOrderIndex": 1
+				},
+				{
+					"name": "category",
+					"optionType": "alphaNumeric",
+					"helperMessage": "Name of the Category.",
+					"isMandatory": true,
+					"inOrderIndex": 2
+				},
+				{
+					"name": "price",
+					"optionType": "double",
+					"helperMessage": "Price of the Expense.",
+					"isMandatory": true,
+					"inOrderIndex": 3
+				},
+				{
+					"name": "date",
+					"optionType": "date",
+					"helperMessage": "Custom Date(YYYY-MM-DD) to add the Expense."
+				},
+				{
+					"name": "location",
+					"optionType": "text",
+					"helperMessage": "Custom Location to add the Expense."
+				},
+				{
+					"name": "tags",
+					"optionType": "text",
+					"helperMessage": "Custom tags to add the Expense."
+				}
+			],
+			"flags": [
+				{
+					"name": "yesterday",
+					"helperMessage": "Add expense for the previous day."
+				}
+			]
+		},
+		{
+			"name": "update",
+			"parameters": [
+				{
+					"name": "row_id",
+					"optionType": "integer",
+					"helperMessage": "Id of the expense.",
+					"isMandatory": true,
+					"inOrderIndex": 1
+				},
+				{
+					"name": "attributeName",
+					"optionType": "text",
+					"helperMessage": "Name of the Attribute to update.",
+					"isMandatory": true,
+					"inOrderIndex": 2
+				},
+				{
+					"name": "attributeValue",
+					"optionType": "text",
+					"helperMessage": "Value of the Attribute to update.",
+					"isMandatory": true,
+					"inOrderIndex": 3
+				}
+			]
+		},
+		{
+			"name": "addCategory",
+			"parameters": [
+				{
+					"name": "name",
+					"optionType": "alphaNumeric",
+					"helperMessage": "Name of the Category.",
+					"isMandatory": true,
+					"inOrderIndex": 1
+				}
+			]
+		},
+		{
+			"name": "list",
+			"parameters": [
+				{
+					"name": "name",
+					"optionType": "text",
+					"helperMessage": "Filters by Regex for Name."
+				},
+				{
+					"name": "category",
+					"optionType": "text",
+					"helperMessage": "Filters by Category.(comma separated)"
+				},
+				{
+					"name": "date",
+					"optionType": "date",
+					"helperMessage": "Filters by Specific Date(YYYY-MM-DD)."
+				},
+				{
+					"name": "month",
+					"optionType": "integer",
+					"helperMessage": "Filters by Month."
+				},
+				{
+					"name": "year",
+					"optionType": "integer",
+					"helperMessage": "Filters by Year."
+				},
+				{
+					"name": "location",
+					"optionType": "text",
+					"helperMessage": "Filters by Location."
+				},
+				{
+					"name": "ignoreCategory",
+					"optionType": "text",
+					"helperMessage": "Ignores records of these categories(comma separated)."
+				},
+				{
+					"name": "tags",
+					"optionType": "text",
+					"helperMessage": "Filter by Tags."
+				},
+				{
+					"name": "ignoreTags",
+					"optionType": "text",
+					"helperMessage": "Ignores records with the give Tags."
+				}
+			],
+			"flags": [
+				{
+					"name": "categories",
+					"helperMessage": "Lists all the available categories."
+				},
+				{
+					"name": "today",
+					"helperMessage": "Lists today's Expenses."
+				},
+				{
+					"name": "yesterday",
+					"helperMessage": "Lists yesterday's Expenses."
+				},
+				{
+					"name": "thisMonth",
+					"helperMessage": "Lists this Month's Expenses."
+				},
+				{
+					"name": "thisYear",
+					"helperMessage": "Lists this Year's Expenses."
+				},
+				{
+					"name": "ascending",
+					"helperMessage": "Lists in ascending order of date."
+				},
+				{
+					"name": "showLocation",
+					"helperMessage": "Lists the expenses with the location column."
+				},
+				{
+					"name": "showAccount",
+					"helperMessage": "Lists the expenses with the account column."
+				},
+				{
+					"name": "showTags",
+					"helperMessage": "Lists the expenses with the tags column."
+				},
+				{
+					"name": "tags",
+					"helperMessage": "Lists all the available tags."
+				},
+				{
+					"name": "excludeTags",
+					"helperMessage": "Lists all expenses with no tags."
+				},
+				{
+					"name": "byDate",
+					"helperMessage": "Lists all expenses for each day"
+				}
+			]
+		},
+		{
+			"name": "remove",
+			"parameters": [
+				{
+					"name": "row_id",
+					"optionType": "text",
+					"helperMessage": "Id of the rows to be removed.",
+					"isMandatory": true,
+					"inOrderIndex": 1
+				}
+			]
+		},
+		{
+			"name": "report",
+			"parameters": [
+				{
+					"name": "month",
+					"optionType": "integer",
+					"helperMessage": "Custom Month's Report."
+				},
+				{
+					"name": "year",
+					"optionType": "integer",
+					"helperMessage": "Custom Year's Report."
+				}
+			],
+			"flags": [
+				{
+					"name": "today",
+					"helperMessage": "Today's Report."
+				},
+				{
+					"name": "thisMonth",
+					"helperMessage": "This Month's Report."
+				},
+				{
+					"name": "thisYear",
+					"helperMessage": "This Year's Report."
+				}
+			]
+		},
+		{
+			"name": "compareMonths",
+			"parameters": [
+				{
+					"name": "range",
+					"optionType": "text",
+					"helperMessage": "Range of months to compare (eg. month1:month2)."
+				},
+				{
+					"name": "year",
+					"optionType": "integer",
+					"helperMessage": "Show records of all months of the 'year'"
+				}
+			]
+		},
+		{
+			"name": "switchAccount",
+			"parameters": [
+				{
+					"name": "accountName",
+					"optionType": "text",
+					"helperMessage": "Name of the account to switch to.",
+					"isMandatory": true,
+					"inOrderIndex": 1
+				}
+			]
+		},
+		{
+			"name": "addTags",
+			"parameters": [
+				{
+					"name": "names",
+					"optionType": "text",
+					"helperMessage": "Comma separated names of the tags to be added.",
+					"isMandatory": true,
+					"inOrderIndex": 1
+				}
+			]
+		},
+		{
+			"name": "removeTags",
+			"parameters": [
+				{
+					"name": "ids",
+					"optionType": "text",
+					"helperMessage": "Comma separated ids of the tags to be removed.",
+					"isMandatory": true,
+					"inOrderIndex": 1
+				}
+			]
+		},
+		{
+			"name": "git-push"
+		},
+		{
+			"name": "cls"
+		},
+		{
+			"name": "clear-screen"
+		},
+		{
+			"name": "help"
+		}
+	]
 }

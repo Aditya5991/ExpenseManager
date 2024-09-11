@@ -9,6 +9,7 @@
 #include "DBHandler/Util.h"
 #include "DBHandler/Table.h"
 #include "Utilities/StringUtils.h"
+#include "DBHandler/DateTime.h"
 
 namespace em::action_handler::cli
 {
@@ -31,15 +32,15 @@ namespace em::action_handler::cli
 
         // handle dates
         if (flags.contains("thisMonth"))
-            finalCondition.Add(Condition_Month::Create(db::util::GetThisMonth()));
+            finalCondition.Add(Condition_Month::Create(db::DateTime::GetThisMonth()));
         if (flags.contains("today"))
-            finalCondition.Add(Condition_Date::Create(db::util::GetCurrentDate()));
+            finalCondition.Add(Condition_Date::Create(db::DateTime::GetCurrentDate().AsString()));
         if (flags.contains("thisYear"))
-            finalCondition.Add(Condition_Year::Create(db::util::GetThisYear()));
+            finalCondition.Add(Condition_Year::Create(db::DateTime::GetThisYear()));
 
         if (flags.contains("yesterday"))
         {
-            std::string date = db::util::GetYesterdayDate();
+            const std::string& date = db::DateTime::GetYesterdayDate().AsString();
             finalCondition.Add(Condition_Date::Create(date));
         }
         else if (options.contains("date"))
@@ -130,6 +131,9 @@ namespace em::action_handler::cli
 
         bool showAccount = flags.contains("showAccount");
         bool showLocation = flags.contains("showLocation");
+
+        if (flags.contains("byDate"))
+            return DisplayByDate(finalCondition, orderBy);
 
         return ProcessDBTable(finalCondition, orderBy, showTags, showAccount, showLocation);
     }
@@ -255,6 +259,7 @@ namespace em::action_handler::cli
         return em::action_handler::Result::Success();
     }
 
+    // protected
     db::Condition* List::CreateIgnoreTagsCondition(const std::string& commaSeparatedTagsToIgnore)
     {
         std::vector<std::string> tags = utils::string::SplitString(commaSeparatedTagsToIgnore);
@@ -265,6 +270,41 @@ namespace em::action_handler::cli
             finalCondition->Add(Condition_IgnoreTags::Create(tag));
 
         return finalCondition;
+    }
+
+    // protected
+    em::action_handler::ResultSPtr List::DisplayByDate(const db::Condition& cond, const db::Clause_OrderBy& orderBy) const
+    {
+        try 
+        {
+            std::vector<db::Model> rows;
+            GetExpenses(rows, cond, orderBy);
+
+            std::map<db::DateTime, double> pricesByDate;
+            for (const db::Model& row : rows)
+            {
+                db::DateTime date(row.at("date").asString());
+                double price = row.at("price").asDouble();
+                pricesByDate[date] += price;
+            }
+
+            Renderer_ExpenseTable_ByDate::Render(pricesByDate);
+        }
+        catch (std::exception& ex)
+        {
+            printf("\nEXCEPTION: %s", ex.what());
+            return Result::GeneralFailure(std::string(ex.what()));
+        }
+
+        return Result::Success();
+    }
+
+    void List::GetExpenses(std::vector<db::Model>& rows, const db::Condition& cond, const db::Clause_OrderBy& orderBy) const
+    {
+        const std::string tableName = databaseMgr.GetCurrentExpenseTableName();
+        auto expenseTable = databaseMgr.GetTable(tableName);
+        if (!expenseTable->Select(rows, cond, orderBy))
+            printf("\nFailed to fetch rows!");
     }
 
 }
