@@ -29,16 +29,6 @@ ValidCommand& CLIParser::RegisterCommand(const std::string& commandName)
     return GetValidCommands().emplace_back(commandName);
 }
 
-// public 
-CLIParser::Param CLIParser::GetParam(const std::string& paramName) const
-{
-    auto iter = m_CommandParams.find(paramName);
-    if (iter == m_CommandParams.end())
-        return Param();
-
-    return Param(iter->second);
-}
-
 //public
 bool CLIParser::HasFlag(const std::string& flagName) const
 {
@@ -48,7 +38,7 @@ bool CLIParser::HasFlag(const std::string& flagName) const
 //public 
 bool CLIParser::HasParameter(const std::string& paramName) const
 {
-    return m_CommandParams.find(paramName) != m_CommandParams.end();
+    return m_UserParameters.find(paramName) != m_UserParameters.end();
 }
 
 //public
@@ -147,8 +137,16 @@ std::string CLIParser::AsJson()
 
     // Add the command options/parameters.
     Json::Value optionsJson(Json::ValueType::objectValue);
-    for (const auto& iter : m_CommandParams)
-        optionsJson[iter.first] = iter.second;
+    for (const auto& iter : m_UserParameters)
+    {
+        const std::string& userParamName = iter.first;
+        const UserParameter& param = iter.second;
+        Json::Value userParamJson(Json::ValueType::arrayValue);
+        for (int i = 0; i < param.GetNumValues(); ++i)
+            userParamJson.append(param.GetValue(i));
+
+        optionsJson[userParamName] = userParamJson;
+    }
     root["options"] = optionsJson;
 
     // Add the flags.
@@ -167,7 +165,7 @@ std::string CLIParser::AsJson()
 void CLIParser::Clear()
 {
     m_Flags.clear();
-    m_CommandParams.clear();
+    m_UserParameters.clear();
     m_CurrentCommandName = "";
 }
 
@@ -200,33 +198,26 @@ bool CLIParser::ValidateArg(
     switch (paramProp.Type)
     {
     case OptionType::TEXT:
-        isValid = true;
-        break;
+        return true;
+
     case OptionType::DOUBLE:
-        if (!util::IsDouble(userInput))
-            isValid = false;
-        break;
+        if (util::IsDouble(userInput))
+            return true;
 
     case OptionType::ALPHA_NUMERIC:
-        if (!util::IsAlphaNumeric(userInput))
-            isValid = false;
-        break;
+        if (util::IsAlphaNumeric(userInput))
+            return true;
 
     case OptionType::INTEGER:
-        if (!util::IsInteger(userInput))
-            isValid = false;
-        break;
-    case OptionType::DATE:
-        if (!util::IsDate(userInput))
-            isValid = false;
-        break;
+        if (util::IsInteger(userInput))
+            return true;
 
-    default:
-        isValid = false;
-        break;
+    case OptionType::DATE:
+        if (util::IsDate(userInput))
+            return true;
     }
 
-    return isValid;
+    return false;
 }
 
 //private
@@ -260,20 +251,24 @@ bool CLIParser::Validate(
 
             m_Flags.insert(flagName);
         }
-        else if (isOptionalParam)
+        else
         {
-            ++argIndex;
-            if (argIndex >= args.size())
+            if (!isOptionalParam)
             {
-                isValid = false;
-                break;
+                if (mandatoryOptionIndex > numMandatoryOptions) // more mandatory args are passed
+                {
+                    isValid = false;
+                    break;
+                }
+
+                ++mandatoryOptionIndex;
             }
 
-            const std::string& option = args[argIndex];
-            const std::string& paramName = currArg.substr(1, currArg.size() - 1); // remove the first '-' char
+            const std::string& userParamName = currArg.substr(1, currArg.size() - 1); // remove the first '-' char
+            UserParameter userParameter(userParamName);
 
             const cli::ValidParamMap& validParams = validCommand.GetParameters();
-            cli::ValidParamMap::const_iterator iter = validParams.find(paramName);
+            cli::ValidParamMap::const_iterator iter = validParams.find(userParamName);
             if (iter == validParams.end())
             {
                 isValid = false;
@@ -281,34 +276,21 @@ bool CLIParser::Validate(
             }
 
             const ValidParameterProperties& paramProp = iter->second;
-            if (!ValidateArg(option, paramProp))
+            int numValues = paramProp.NumValues;
+
+            for (int i = 0; i < numValues; ++i)
             {
-                isValid = false;
-                break;
+                ++argIndex;
+                const std::string& value = args[argIndex];
+                if (!ValidateArg(value, paramProp))
+                {
+                    isValid = false;
+                    break;
+                }
+                userParameter.AddValue(value);
             }
 
-            m_CommandParams[paramName] = option;
-        }
-        else // isMandatory
-        {
-            if (mandatoryOptionIndex > numMandatoryOptions) // more mandatory args are passed
-            {
-                isValid = false;
-                break;
-            }
-
-            const std::string& option = args[argIndex];
-
-            auto iter = validCommand.GetParameterAtIndex(mandatoryOptionIndex);
-
-            const ValidParameterProperties& paramProp = iter->second;
-            if (!ValidateArg(option, paramProp))
-                break;
-
-            const std::string& paramName = iter->first;
-            m_CommandParams[paramName] = option;
-
-            ++mandatoryOptionIndex;
+            m_UserParameters.insert(std::make_pair(userParamName, std::move(userParameter)));
         }
 
         ++argIndex;
@@ -324,7 +306,7 @@ bool CLIParser::Validate(
             const auto iter = validCommand.GetParameterAtIndex(i);
             const std::string& paramName = iter->first;
 
-            if (!m_CommandParams.contains(paramName))
+            if (!m_UserParameters.contains(paramName))
             {
                 printf("\nMissing Parameter : %s", paramName.c_str());
                 break;

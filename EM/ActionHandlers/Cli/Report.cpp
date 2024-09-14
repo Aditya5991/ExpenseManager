@@ -13,7 +13,7 @@ namespace em::action_handler::cli
     em::action_handler::ResultSPtr Report::Execute(
         const std::string& commandName,
         const std::unordered_set<std::string>& flags,
-        const std::map<std::string, std::string>& options)
+        const std::map<std::string, std::vector<std::string>>& options)
     {
         assert(commandName == "report");
         ReportHandler report;
@@ -35,20 +35,20 @@ namespace em::action_handler::cli
         // check if month and year both are specified
         if (hasParamMonth && hasParamYear)
         {
-            month = options.at("month");
-            year = options.at("year");
+            month = options.at("month").front();
+            year = options.at("year").front();
             option = ReportHandler::MONTH_AND_YEAR;
         }
         // check if only month is specified.
         else if (hasParamMonth)
         {
-            month = options.at("month");
+            month = options.at("month").front();
             option = ReportHandler::MONTH;
         }
         // check if only year is specified.
         else if (hasParamYear)
         {
-            year = options.at("year");
+            year = options.at("year").front();
             option = ReportHandler::YEAR;
         }
         // check if --thisMonth is specified

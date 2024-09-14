@@ -114,6 +114,12 @@
 					"helperMessage": "Filters by Year."
 				},
 				{
+					"name": "range",
+					"optionType": "date",
+					"helperMessage": "Filters between range of date provided.",
+					"numValues" : 2
+				},
+				{
 					"name": "location",
 					"optionType": "text",
 					"helperMessage": "Filters by Location."

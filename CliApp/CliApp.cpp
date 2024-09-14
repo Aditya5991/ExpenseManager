@@ -130,16 +130,18 @@ void InitializeCLI()
                 {
                     const std::string& paramName = paramJson["name"].asString();
                     const std::string& optionType = paramJson.isMember("optionType") ? paramJson["optionType"].asString() : "";
-                    const std::string helperMessage = paramJson.isMember("helperMessage") ? paramJson["helperMessage"].asString() : "";
+                    const std::string& helperMessage = paramJson.isMember("helperMessage") ? paramJson["helperMessage"].asString() : "";
                     bool isMandatory = paramJson.isMember("isMandatory") ? paramJson["isMandatory"].asBool() : false;
                     int inOrderIndex = paramJson.isMember("inOrderIndex") ? paramJson["inOrderIndex"].asInt() : -1;
+                    int numValues = paramJson.isMember("numValues") ? paramJson["numValues"].asInt() : -1;
 
                     validCommand.AddParameter(paramName,
                         {
                             cli::ValidCommand::ConvertStringToOptionType(optionType),
                             helperMessage,
                             isMandatory,
-                            inOrderIndex
+                            inOrderIndex,
+                            numValues
                         });
                 }
             }
@@ -209,20 +211,10 @@ void Initialize()
     InitializeActionImplementor();
 }
 
-void Test()
-{
-    std::vector<db::Model> rows;
-    auto table = em::DatabaseManager::GetInstance().GetTable("reminder");
-    table->Select(rows);
-    auto row = rows[0];
-    std::cout << row["name"].asString() << std::endl;
-    std::cout << row["categoryId"].asInt() << std::endl;
-    std::cout << row["category"].asModel()["name"].asString() << std::endl;
-    auto category = rows[0]["category"];
-}
-
 int main(int argc, char** argv)
 {
+    std::vector<std::any> vec = { "aditya", 28 };
+
     try
     {
         Initialize();
@@ -233,12 +225,6 @@ int main(int argc, char** argv)
             std::string commandStr;
             std::vector<std::string> args;
             GetCommandString(commandStr, args);
-
-            if (commandStr == "test")
-            {
-                Test();
-                continue;
-            }
 
             if (commandStr.empty())
                 continue;

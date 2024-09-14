@@ -25,7 +25,7 @@ namespace em::action_handler::cli
 		virtual em::action_handler::ResultSPtr Execute(
 			const std::string& commandName,
 			const std::unordered_set<std::string>& flags,
-			const std::map<std::string, std::string>& options) override;
+			const std::map<std::string, std::vector<std::string>>& options) override;
 
 		/**
 		* This function is used to handle the byDate flag

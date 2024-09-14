@@ -9,11 +9,11 @@ namespace em::action_handler::cli
 	em::action_handler::ResultSPtr SwitchAccount::Execute(
 		const std::string& commandName,
 		const std::unordered_set<std::string>& flags,
-		const std::map<std::string, std::string>& options)
+		const std::map<std::string, std::vector<std::string>>& options)
 	{
 		DBG_ASSERT(commandName == "switchAccount");
 
-		const std::string& newAccountName = options.at("accountName");
+		const std::string& newAccountName = options.at("accountName").front();
 		StatusCode switchStatus = em::account::Manager::GetInstance().SwitchAccount(newAccountName);
 
 		// handle if account not switched.

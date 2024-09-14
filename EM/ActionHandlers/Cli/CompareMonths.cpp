@@ -14,7 +14,7 @@ namespace em::action_handler::cli
     em::action_handler::ResultSPtr CompareMonths::Execute(
         const std::string& commandName,
         const std::unordered_set<std::string>& flags,
-        const std::map<std::string, std::string>& options)
+        const std::map<std::string, std::vector<std::string>>& options)
     {
         assert(commandName == "compareMonths");
 
@@ -23,14 +23,14 @@ namespace em::action_handler::cli
         std::string year = db::DateTime::GetThisYear();
         if (options.contains("range"))
         {
-            bool isValid = ValidateRangeParameter(options.at("range"), startMonth, endMonth);
+            bool isValid = ValidateRangeParameter(options.at("range").front(), startMonth, endMonth);
             if (!isValid)
                 return Result::Create(StatusCode::InvalidParameterValue, "Wrong parameters for range!");
         }
 
         if (options.contains("year"))
         {
-            year = options.at("year");
+            year = options.at("year").front();
             if (!em::utils::date::IsValidYear(year))
                 return Result::Create(StatusCode::InvalidParameterValue, std::format("Invalid year: {}", year));
         }

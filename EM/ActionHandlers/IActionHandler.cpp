@@ -8,7 +8,7 @@ namespace em::action_handler
 	{
         std::string commandName;
 		std::unordered_set<std::string> flags;
-		std::map<std::string, std::string> options;
+		std::map<std::string, std::vector<std::string>> options;
 
         Json::Value root;
         Json::Reader reader;
@@ -20,17 +20,18 @@ namespace em::action_handler
         // Set Flags
         const Json::Value& flagsJson = root["flags"];
         for (const Json::Value& flagJson : flagsJson)
-        {
             flags.insert(flagJson.asString());
-        }
 
         // Set Options
         const Json::Value& optionsJson = root["options"];
         const std::vector<std::string>& memberNames = optionsJson.getMemberNames();
         for (const std::string& key : memberNames)
         {
-            std::string value = optionsJson[key].asString();
-            options.insert(std::make_pair(key, value));
+            std::vector<std::string> internalOptions;
+            for (const Json::Value& json : optionsJson[key])
+                internalOptions.push_back(json.asString());
+
+            options.insert(std::make_pair(key, internalOptions));
         }
 
         return Execute(commandName, flags, options);

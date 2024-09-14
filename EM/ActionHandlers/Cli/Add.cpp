@@ -15,7 +15,7 @@ namespace em::action_handler::cli
     ResultSPtr Add::Execute(
         const std::string& commandName,
         const std::unordered_set<std::string>& flags,
-        const std::map<std::string, std::string>& options)
+        const std::map<std::string, std::vector<std::string>>& options)
     {
         assert(commandName == "add");
 
@@ -25,26 +25,26 @@ namespace em::action_handler::cli
         db::Model model;
         // validate if the category exists
         db::Model categoryModel;
-        const std::string& category = options.at("category");
+        const std::string& category = options.at("category").front();
         if (!categoryTable->CheckIfExists("name", category, &categoryModel))
             return Result::Create(StatusCode::CategoryDoesNotExist, std::format(ERROR_CATEGORY_DOES_NOT_EXIST, category));
 
         model["category_id"] = categoryModel["row_id"];
         model["name"] = options.at("name");
-        model["price"] = std::stod(options.at("price"));
+        model["price"] = std::stod(options.at("price").front());
 
-        model["location"] = options.contains("location") ? options.at("location") : ConfigManager::GetInstance().GetDefaultLocation();
+        model["location"] = options.contains("location") ? options.at("location").front() : ConfigManager::GetInstance().GetDefaultLocation();
 
         if (flags.contains("yesterday"))
             model["date"] = db::DateTime::GetYesterdayDate().AsString();
         else
-            model["date"] = options.contains("date") ? options.at("date") : db::DateTime::GetCurrentDate().AsString();
+            model["date"] = options.contains("date") ? options.at("date").front() : db::DateTime::GetCurrentDate().AsString();
 
         if (options.contains("tags"))
         {
             std::string tag;
-            if(!GenerateTags(options.at("tags"), tag))
-                return Result::Create(StatusCode::DBError, std::format(ERROR_TAG_DOES_NOT_EXIST, options.at("tags")));
+            if(!GenerateTags(options.at("tags").front(), tag))
+                return Result::Create(StatusCode::DBError, std::format(ERROR_TAG_DOES_NOT_EXIST, options.at("tags").front()));
 
             model["tags"] = tag;
         }

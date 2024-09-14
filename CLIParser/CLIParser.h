@@ -36,20 +36,19 @@ class CLIParser
 public:
 
     /**
-    * This struct represents the return value that is asked from the CLIParser.
-    * It has helper functions to retrieve the value as different basic types.
+    * This class represents the user parameter that is passed by the user.
     */
-    struct Param
+    class UserParameter : public std::vector<std::string>
     {
-        Param(): m_Value("") {}
-        Param(const std::string& value) : m_Value(value) {}
+    public:
+        UserParameter(const std::string& name) : m_Name(name) {}
+        void AddValue(const std::string& value) { push_back(value); }
 
-        int AsInt() { return std::stoi(m_Value); }
-        double AsDouble() { return std::stod(m_Value); }
-        const std::string& AsString() { return m_Value; }
+        const std::string& GetValue(int index = 0) const { return at(index); };
+        int GetNumValues() const { return static_cast<int>(size()); }
 
     private:
-        const std::string& m_Value;
+        std::string m_Name;
     };
 
     /**
@@ -95,17 +94,6 @@ public:
     *       True, if parsing was successful.
     */
     bool Parse(const std::vector<std::string>& args);
-
-    /**
-    * This function returns the value of the parameter.
-    * 
-    * @param [in] paramName
-    *       Name of the parameter for which the value needs to be retrieved.
-    * 
-    * @return
-    *       struct Param object, representing the value of the parameter.
-    */
-    Param GetParam(const std::string& paramName) const;
 
     /**
     * Checks if the flag was specified in the cli arguments.
@@ -212,11 +200,11 @@ private:
     void SetExeName(const std::string& name) { m_ExeName = name; }
 
 private:
-    std::vector<ValidCommand>                       m_ValidCommands;
-    std::unordered_map<std::string, std::string>    m_CommandParams;
-    std::unordered_set<std::string>                 m_Flags;
-    std::string                                     m_ExeName;
-    std::string                                     m_CurrentCommandName;
+    std::vector<ValidCommand>                               m_ValidCommands;
+    std::unordered_map<std::string, UserParameter>          m_UserParameters;
+    std::unordered_set<std::string>                         m_Flags;
+    std::string                                             m_ExeName;
+    std::string                                             m_CurrentCommandName;
 
     static std::mutex s_Mutex;
     static CLIParser* s_Instance;

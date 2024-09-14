@@ -18,7 +18,7 @@ namespace em::action_handler::cli
     em::action_handler::ResultSPtr List::Execute(
         const std::string& commandName,
         const std::unordered_set<std::string>& flags,
-        const std::map<std::string, std::string>& options)
+        const std::map<std::string, std::vector<std::string>>& options)
     {
         assert(commandName == "list");
 
@@ -45,55 +45,55 @@ namespace em::action_handler::cli
         }
         else if (options.contains("date"))
         {
-            std::string date = options.at("date");
+            const std::string& date = options.at("date").front();
             finalCondition.Add(Condition_Date::Create(date));
         }
 
         if (options.contains("month") && options.contains("year"))
         {
-            std::string month = options.at("month");
+            std::string month = options.at("month").front();
             utils::date::FixMonthName(month);
 
-            std::string year = options.at("year");
+            const std::string& year = options.at("year").front();
             finalCondition.Add(Condition_Month::Create(month, year));
         }
         else if (options.contains("month"))
         {
-            std::string month = options.at("month");
+            std::string month = options.at("month").front();
             utils::date::FixMonthName(month);
             finalCondition.Add(Condition_Month::Create(month));
         }
         else if (options.contains("year"))
         {
-            std::string year = options.at("year");
+            const std::string& year = options.at("year").front();
             finalCondition.Add(Condition_Year::Create(year));
         }
 
         // handle name
         if (options.contains("name"))
         {
-            std::string name = options.at("name");
+            std::string name = options.at("name").front();
             finalCondition.Add(Condition_ListNameFilter::Create(name));
         }
 
         // handle location
         if (options.contains("location"))
         {
-            std::string location = options.at("location");
+            std::string location = options.at("location").front();
             finalCondition.Add(Condition_LocationFilter::Create(location));
         }
 
         // handle categories
         if (options.contains("category"))
         {
-            auto result = AppendCategoryCondition(finalCondition, options.at("category"));
+            auto result = AppendCategoryCondition(finalCondition, options.at("category").front());
             if (result->statusCode != StatusCode::Success)
                 return result;
         }
         else if (options.contains("ignoreCategory"))
         {
             std::vector<std::string> categories;
-            em::utils::string::SplitString(options.at("ignoreCategory"), categories);
+            em::utils::string::SplitString(options.at("ignoreCategory").front(), categories);
             for (const std::string& category : categories)
             {
                 auto categoriesTable = databaseMgr.GetTable("categories");
@@ -112,7 +112,7 @@ namespace em::action_handler::cli
         bool showTags = flags.contains("showTags");
         if (options.contains("tags"))
         {
-            auto result = AppendTagsCondition(finalCondition, options.at("tags"));
+            auto result = AppendTagsCondition(finalCondition, options.at("tags").front());
             if (result->statusCode != StatusCode::Success)
                 return result;
 
@@ -120,7 +120,7 @@ namespace em::action_handler::cli
         }
         else if (options.contains("ignoreTags"))
         {
-            const std::string& commaSeparatedTagsToIgnore = options.at("ignoreTags");
+            const std::string& commaSeparatedTagsToIgnore = options.at("ignoreTags").front();
             db::Condition* ignoreTagsCond = CreateIgnoreTagsCondition(commaSeparatedTagsToIgnore);
             finalCondition.Add(ignoreTagsCond);
         }

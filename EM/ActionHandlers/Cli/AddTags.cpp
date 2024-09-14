@@ -11,11 +11,11 @@ namespace em::action_handler::cli
     ResultSPtr AddTags::Execute(
         const std::string& commandName,
         const std::unordered_set<std::string>& flags,
-        const std::map<std::string, std::string>& options)
+        const std::map<std::string, std::vector<std::string>>& options)
     {
         assert(commandName == "addTags");
 
-        std::vector<std::string> tags = utils::string::SplitString(options.at("names"), ',');
+        std::vector<std::string> tags = utils::string::SplitString(options.at("names").front(), ',');
         
         auto table = databaseMgr.GetTable("tags");
         

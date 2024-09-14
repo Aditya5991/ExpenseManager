@@ -12,7 +12,7 @@ namespace em::action_handler::cli
     em::action_handler::ResultSPtr AddCategory::Execute(
         const std::string& commandName,
         const std::unordered_set<std::string>& flags,
-        const std::map<std::string, std::string>& options)
+        const std::map<std::string, std::vector<std::string>>& options)
     {
         assert(commandName == "addCategory");
         

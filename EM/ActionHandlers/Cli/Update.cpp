@@ -16,19 +16,19 @@ namespace em::action_handler::cli
     ResultSPtr Update::Execute(
         const std::string& commandName,
         const std::unordered_set<std::string>& flags,
-        const std::map<std::string, std::string>& options)
+        const std::map<std::string, std::vector<std::string>>& options)
     {
         assert(commandName == "update");
 
-        int rowId = std::atoi(options.at("row_id").c_str());
+        int rowId = std::atoi(options.at("row_id").front().c_str());
 
         auto expenseTable = databaseMgr.GetTable(databaseMgr.GetCurrentExpenseTableName());
         db::Model origModel;
         if (!expenseTable->SelectById(origModel, rowId))
-            return Result::GeneralFailure(std::format("ERROR: Entity with rows_id - % d does not exist!", rowId));
+            return Result::GeneralFailure(std::format("ERROR: Cannot find entry with rows_id - '{}'.", rowId));
 
-        std::string attributeName = options.at("attributeName");
-        std::string attributeValue = options.at("attributeValue");
+        std::string attributeName = options.at("attributeName").front();
+        std::string attributeValue = options.at("attributeValue").front();
 
         ResultSPtr validationResult = Validate(attributeName, attributeValue);
         if (validationResult->statusCode != StatusCode::Success)

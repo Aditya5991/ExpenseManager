@@ -29,17 +29,21 @@ struct ValidParameterProperties
         OptionType type = OptionType::INVALID, 
         const std::string& helperMessage = "", 
         bool mandatory = false, 
-        int index = -1)
+        int index = -1,
+        int numValues = 1)
         : Type(type)
         , HelperMessage(helperMessage)
         , IsMandatory(mandatory)
-        , InOrderIndex(index) {}
+        , InOrderIndex(index)
+        , NumValues(numValues){}
+
     ValidParameterProperties(const ValidParameterProperties& rhs) = default;
 
     OptionType  Type;
     bool        IsMandatory;
     int         InOrderIndex; // will be -1 for optional
     std::string HelperMessage;
+    int         NumValues;
 };
 
 
