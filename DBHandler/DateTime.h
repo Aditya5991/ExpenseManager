@@ -20,6 +20,8 @@ public:
     bool operator < (const DateTime& other) const;
     bool operator > (const DateTime& other) const;
     bool operator == (const DateTime& other) const;
+    bool operator <= (const DateTime& other) const;
+    bool operator >= (const DateTime& other) const;
 
     // static
     static DateTime GetNow();

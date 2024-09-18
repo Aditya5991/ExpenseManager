@@ -70,6 +70,29 @@ bool DateTime::operator > (const DateTime& other) const
     return m_Day > other.m_Day;
 }
 
+bool DateTime::operator <= (const DateTime& other) const
+{
+    if (m_Year != other.m_Year)
+        return m_Year <= other.m_Year;
+
+    if (m_Month != other.m_Month)
+        return m_Month <= other.m_Month;
+
+    return m_Day <= other.m_Day;
+}
+
+bool DateTime::operator >= (const DateTime& other) const
+{
+    if (m_Year != other.m_Year)
+        return m_Year >= other.m_Year;
+
+    if (m_Month != other.m_Month)
+        return m_Month >= other.m_Month;
+
+    return m_Day >= other.m_Day;
+}
+
+
 bool DateTime::operator==(const DateTime& other) const
 {
     return (other.GetYear() == GetYear() &&

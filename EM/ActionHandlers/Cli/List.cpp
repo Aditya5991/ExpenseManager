@@ -132,6 +132,17 @@ namespace em::action_handler::cli
         bool showAccount = flags.contains("showAccount");
         bool showLocation = flags.contains("showLocation");
 
+        if (options.contains("range"))
+        {
+            db::DateTime startDate = options.at("range").front();
+            db::DateTime endDate = options.at("range").back();
+
+            if (endDate < startDate)
+                return Result::GeneralFailure("StartDate cannot be greater than EndDate!");
+
+            return ProcessDBTableWithDateRange(finalCondition, orderBy, startDate, endDate, showTags, showAccount, showLocation);
+        }
+
         if (flags.contains("byDate"))
             return DisplayByDate(finalCondition, orderBy);
 
@@ -199,7 +210,6 @@ namespace em::action_handler::cli
         Renderer_CategoryTable::Render(rows);
         return em::action_handler::Result::Success();
     }
-
 
     // private
     em::action_handler::ResultSPtr List::AppendCategoryCondition(
@@ -298,6 +308,61 @@ namespace em::action_handler::cli
         return Result::Success();
     }
 
+    // protected
+    em::action_handler::ResultSPtr List::ProcessDBTableWithDateRange(
+        const db::Condition& cond,
+        const db::Clause_OrderBy& orderBy,
+        const db::DateTime& startDate,
+        const db::DateTime& endDate,
+        bool showTags,
+        bool showAccount,
+        bool showLocation)
+    {
+        try
+        {
+            std::vector<db::Model> rows;
+
+            const std::string tableName = databaseMgr.GetCurrentExpenseTableName();
+            auto expenseTable = databaseMgr.GetTable(tableName);
+            if (!expenseTable->Select(rows, cond, orderBy))
+                return Result::Create(StatusCode::DBError, "Failed to retrieve from table!");
+
+            std::vector<db::Model> rowsWithinRange;
+            std::for_each(rows.begin(), rows.end(), 
+                [&](const db::Model& row) 
+                {
+                    const db::DateTime& dateTime = row.at("date").asDateTime();
+                    if (startDate <= dateTime && dateTime <= endDate)
+                        rowsWithinRange.push_back(row);
+                });
+
+            // sort according to price, highest to lowest
+            std::sort(rowsWithinRange.begin(), rowsWithinRange.end(),
+                [](db::Model& e1, db::Model& e2)
+                {
+                    return e1["date"].asDateTime() < e2["date"].asDateTime();
+                });
+
+            const std::string& currentAccountName = em::account::Manager::GetInstance().GetCurrentAccount()->GetName();
+
+            double totalExpense = 0.0;
+            std::for_each(rowsWithinRange.begin(), rowsWithinRange.end(), 
+                [&totalExpense](const db::Model& row) 
+                {
+                    totalExpense += row.at("price").asDouble(); 
+                });
+
+            Renderer_ExpenseTable::Render(currentAccountName, rowsWithinRange, totalExpense, showTags, showAccount, showLocation);
+            return Result::Success();
+        }
+        catch (std::exception& ex)
+        {
+            printf("\nEXCEPTION: %s", ex.what());
+            return Result::GeneralFailure(ex.what());
+        }
+    }
+
+    // protected
     void List::GetExpenses(std::vector<db::Model>& rows, const db::Condition& cond, const db::Clause_OrderBy& orderBy) const
     {
         const std::string tableName = databaseMgr.GetCurrentExpenseTableName();

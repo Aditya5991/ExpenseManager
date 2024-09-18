@@ -7,6 +7,7 @@ namespace db
 	class Condition;
 	class Clause_OrderBy;
 	class Model;
+	class DateTime;
 }
 
 namespace em::action_handler::cli
@@ -42,7 +43,7 @@ namespace em::action_handler::cli
 		virtual em::action_handler::ResultSPtr DisplayByDate(const db::Condition& cond, const db::Clause_OrderBy& orderBy) const;
 
 		/**
-		* This function retrieves the data from the Database Table, and renders it to the console.
+		* This function retrieves the data from the Database Table, and renders it to the console based on the db::Condition and db::Clause_OrderBy.
 		* 
 		* @params [in] cond
 		*		Conditions that will be used to filter the data.
@@ -63,6 +64,41 @@ namespace em::action_handler::cli
 		virtual em::action_handler::ResultSPtr ProcessDBTable(
 			const db::Condition& cond, 
 			const db::Clause_OrderBy& orderBy,
+			bool showTags = false,
+			bool showAccount = false,
+			bool showLocation = false);
+
+		/**
+		* This function retrieves the data from the Database Table, and renders it to the console based on the db::Condition and db::Clause_OrderBy
+		* and the startDate, endDate passed.
+		*
+		* @params [in] cond
+		*		Conditions that will be used to filter the data.
+		*
+		* @params [in] orderBy
+		*		Determines ordering or the rows.
+		* 
+		* @params [in] startDate
+		*		Determines the date above which the expenses are to be considered.
+		*
+		* @params [in] endDate
+		*		Determines the date below which the expenses are to be considered.
+		*
+		* @params [in] showTags
+		*		Set true, to show the tags column.
+		*
+		* @params [in] showAccount
+		*		Set true, to show the account column.
+		*
+		* @return
+		*		Object of ResultSPtr that contains the result details on execution of the function.
+		*
+		*/
+		virtual em::action_handler::ResultSPtr ProcessDBTableWithDateRange(
+			const db::Condition& cond,
+			const db::Clause_OrderBy& orderBy,
+			const db::DateTime& startDate,
+			const db::DateTime& endDate,
 			bool showTags = false,
 			bool showAccount = false,
 			bool showLocation = false);

@@ -133,7 +133,7 @@ void InitializeCLI()
                     const std::string& helperMessage = paramJson.isMember("helperMessage") ? paramJson["helperMessage"].asString() : "";
                     bool isMandatory = paramJson.isMember("isMandatory") ? paramJson["isMandatory"].asBool() : false;
                     int inOrderIndex = paramJson.isMember("inOrderIndex") ? paramJson["inOrderIndex"].asInt() : -1;
-                    int numValues = paramJson.isMember("numValues") ? paramJson["numValues"].asInt() : -1;
+                    int numValues = paramJson.isMember("numValues") ? paramJson["numValues"].asInt() : 1;
 
                     validCommand.AddParameter(paramName,
                         {
