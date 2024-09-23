@@ -18,7 +18,7 @@ namespace em::action_handler::cli
 
 	private:
 		em::action_handler::ResultSPtr CompareAllMonths(const std::string& year, int startMonth = 1, int endMonth = 12);
-		bool ValidateRangeParameter(const std::string& rangeValueStr, int& startMonth, int& endMonth);
+		bool ValidateRangeParameter(const std::vector<std::string>& rangeValueStr, int& startMonth, int& endMonth);
 
 	};
 

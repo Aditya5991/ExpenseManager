@@ -117,7 +117,7 @@
 					"name": "range",
 					"optionType": "date",
 					"helperMessage": "Filters between range of date provided.",
-					"numValues" : 2
+					"numValues": 2
 				},
 				{
 					"name": "location",
@@ -238,7 +238,8 @@
 				{
 					"name": "range",
 					"optionType": "text",
-					"helperMessage": "Range of months to compare (eg. month1:month2)."
+					"helperMessage": "Range of months to compare (eg. month1 month2).",
+					"numValues": 2
 				},
 				{
 					"name": "year",

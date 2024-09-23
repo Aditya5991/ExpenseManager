@@ -23,7 +23,7 @@ namespace em::action_handler::cli
         std::string year = db::DateTime::GetThisYear();
         if (options.contains("range"))
         {
-            bool isValid = ValidateRangeParameter(options.at("range").front(), startMonth, endMonth);
+            bool isValid = ValidateRangeParameter(options.at("range"), startMonth, endMonth);
             if (!isValid)
                 return Result::Create(StatusCode::InvalidParameterValue, "Wrong parameters for range!");
         }
@@ -57,25 +57,25 @@ namespace em::action_handler::cli
         return Result::Success();
     }
 
-    bool CompareMonths::ValidateRangeParameter(const std::string& rangeValueStr, int& startMonth, int& endMonth)
+    bool CompareMonths::ValidateRangeParameter(const std::vector<std::string>& rangeValueStr, int& startMonth, int& endMonth)
     {
-        std::vector<std::string> months;
-        em::utils::string::SplitString(rangeValueStr, months, ':');
-
-        if (months.size() != 2)
+        if (rangeValueStr.size() != 2)
         {
-            printf("-range parameter must have value as 'startMonth:endMonth'");
+            printf("-range parameter must have value as 'startMonth endMonth'");
             return false;
         }
 
-        if (!em::utils::IsInteger(months[0]) || !em::utils::IsInteger(months[1]))
+        std::string startMonthStr = rangeValueStr.front();
+        std::string endMonthStr = rangeValueStr.back();
+
+        if (!em::utils::IsInteger(startMonthStr) || !em::utils::IsInteger(endMonthStr))
         {
             printf("\n-range parameter must have integers");
             return false;
         }
 
-        startMonth = std::stoi(months[0]);
-        endMonth = std::stoi(months[1]);
+        startMonth = std::stoi(startMonthStr);
+        endMonth = std::stoi(endMonthStr);
 
         if (startMonth < 1 || startMonth > 12)
         {
