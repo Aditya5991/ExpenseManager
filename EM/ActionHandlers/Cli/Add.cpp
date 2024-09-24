@@ -30,7 +30,7 @@ namespace em::action_handler::cli
             return Result::Create(StatusCode::CategoryDoesNotExist, std::format(ERROR_CATEGORY_DOES_NOT_EXIST, category));
 
         model["category_id"] = categoryModel["row_id"];
-        model["name"] = options.at("name");
+        model["name"] = options.at("name").front();
         model["price"] = std::stod(options.at("price").front());
 
         model["location"] = options.contains("location") ? options.at("location").front() : ConfigManager::GetInstance().GetDefaultLocation();

@@ -251,19 +251,8 @@ bool CLIParser::Validate(
 
             m_Flags.insert(flagName);
         }
-        else
+        else if(isOptionalParam)
         {
-            if (!isOptionalParam)
-            {
-                if (mandatoryOptionIndex > numMandatoryOptions) // more mandatory args are passed
-                {
-                    isValid = false;
-                    break;
-                }
-
-                ++mandatoryOptionIndex;
-            }
-
             const std::string& userParamName = currArg.substr(1, currArg.size() - 1); // remove the first '-' char
             UserParameter userParameter(userParamName);
 
@@ -291,6 +280,28 @@ bool CLIParser::Validate(
             }
 
             m_UserParameters.insert(std::make_pair(userParamName, std::move(userParameter)));
+        }
+        else // Mandatory Parameter
+        {
+            if (mandatoryOptionIndex > numMandatoryOptions) // more mandatory args are passed
+            {
+                isValid = false;
+                break;
+            }
+
+            const std::string& option = args[argIndex];
+
+            auto iter = validCommand.GetParameterAtIndex(mandatoryOptionIndex);
+            const ValidParameterProperties& paramProp = iter->second;
+            if (!ValidateArg(option, paramProp))
+                break;
+
+            const std::string& userParamName = iter->first;
+            UserParameter userParameter(userParamName);
+            userParameter.AddValue(option);
+            m_UserParameters.insert(std::make_pair(userParamName, std::move(userParameter)));
+
+            ++mandatoryOptionIndex;
         }
 
         ++argIndex;
