@@ -104,6 +104,20 @@ namespace em::action_handler::cli
 			bool showLocation = false);
 
 		/**
+		* This function returns the OrderBy clause for the query, which decides the ordering of the expenses in the table.
+		* 
+		* @params [in] orderByKey
+		*		The key in DB by which we want to order the expenses.
+		* 
+		* @params [in] isDescending
+		*		Flag to list the expenses in descending order.
+		* 
+		* @returns
+		*		db::Clause_OrderBy object with the given params.
+		*/
+		db::Clause_OrderBy GetOrderByClause(const std::string& orderByKey , bool isDescending = false) const;
+
+		/**
 		* This function handles the request of listing categories
 		* 
 		* @return 
@@ -122,8 +136,11 @@ namespace em::action_handler::cli
 		/**
 		* This function handles the creation of the database condition to ignore tags from the records.
 		* 
+		* @params [in] commaSeparatedTagsToIgnore
+		*		Comma separated strings of tags.
+		* 
 		* @returns
-		*		Pointer to the new db::Condition object
+		*		Pointer to the new db::Condition object.
 		*/
 		db::Condition* CreateIgnoreTagsCondition(const std::string& commaSeparatedTagsToIgnore);
 

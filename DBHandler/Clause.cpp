@@ -4,7 +4,7 @@ BEGIN_NAMESPACE_DB
 
 Clause_OrderBy::Clause_OrderBy(
     const std::string& columnName, 
-    Type type)
+    OrderType type)
     : m_ColumnName(columnName)
     , m_Type(type)
 {
@@ -12,7 +12,7 @@ Clause_OrderBy::Clause_OrderBy(
 
 bool Clause_OrderBy::IsDescending() const
 {
-    return m_Type == Type::DESCENDING;
+    return m_Type == OrderType::DESCENDING;
 }
 
 bool Clause_OrderBy::IsValid() const

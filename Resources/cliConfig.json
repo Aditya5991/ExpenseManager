@@ -138,6 +138,11 @@
 					"name": "ignoreTags",
 					"optionType": "text",
 					"helperMessage": "Ignores records with the give Tags."
+				},
+				{
+					"name": "orderBy",
+					"optionType": "text",
+					"helperMessage": "Attribute to order the expenses by."
 				}
 			],
 			"flags": [
@@ -162,8 +167,8 @@
 					"helperMessage": "Lists this Year's Expenses."
 				},
 				{
-					"name": "ascending",
-					"helperMessage": "Lists in ascending order of date."
+					"name": "descending",
+					"helperMessage": "Lists in descending order of date."
 				},
 				{
 					"name": "showLocation",

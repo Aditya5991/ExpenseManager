@@ -105,9 +105,7 @@ namespace em::action_handler::cli
             }
         }
 
-        db::Clause_OrderBy orderBy("date", db::Clause_OrderBy::DESCENDING);
-        if (flags.contains("ascending"))
-            orderBy.SetType(db::Clause_OrderBy::ASCENDING);
+
 
         bool showTags = flags.contains("showTags");
         if (options.contains("tags"))
@@ -131,6 +129,11 @@ namespace em::action_handler::cli
 
         bool showAccount = flags.contains("showAccount");
         bool showLocation = flags.contains("showLocation");
+
+        // handle the order by clause
+        const std::string orderByKey = options.contains("orderBy") ? options.at("orderBy").front() : "";
+        bool isDecending = flags.contains("descending");
+        db::Clause_OrderBy orderBy = std::move(GetOrderByClause(orderByKey, isDecending));
 
         if (options.contains("range"))
         {
@@ -164,19 +167,23 @@ namespace em::action_handler::cli
         if (!expenseTable->Select(rows, dbCondition, orderBy))
             return Result::Create(StatusCode::DBError, "Failed to retrieve from table!");
 
-        // sort according to price, highest to lowest
-        std::sort(rows.begin(), rows.end(),
-            [](db::Model& e1, db::Model& e2)
-            {
-                return e1["date"].asDateTime() < e2["date"].asDateTime();
-            });
-
         const std::string& currentAccountName = em::account::Manager::GetInstance().GetCurrentAccount()->GetName();
 
         double totalExpense = expenseTable->SumOf("price", dbCondition);
         Renderer_ExpenseTable::Render(currentAccountName, rows, totalExpense, showTags, showAccount, showLocation);
 
         return Result::Success();
+    }
+
+    // protected
+    db::Clause_OrderBy List::GetOrderByClause(const std::string& orderByKey, bool isDescending) const
+    {
+        db::Clause_OrderBy::OrderType orderType = isDescending ? db::Clause_OrderBy::DESCENDING : db::Clause_OrderBy::ASCENDING;
+
+        if (!orderByKey.empty())
+            return db::Clause_OrderBy(orderByKey, orderType);
+
+        return db::Clause_OrderBy("date", orderType);
     }
 
     // protected

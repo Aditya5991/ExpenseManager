@@ -8,16 +8,16 @@ class Clause_OrderBy
 {
 public:
 
-    enum Type
+    enum OrderType
     {
         ASCENDING,
         DESCENDING
     };
 
     Clause_OrderBy() : Clause_OrderBy("") {}
-    Clause_OrderBy(const std::string& columnName, Type type = Type::ASCENDING);
+    Clause_OrderBy(const std::string& columnName, OrderType type = OrderType::ASCENDING);
 
-    void SetType(Type type) { m_Type = type; }
+    void SetType(OrderType type) { m_Type = type; }
     bool IsDescending() const;
     bool IsValid() const;
 
@@ -25,7 +25,7 @@ public:
 
 private:
     std::string m_ColumnName;
-    Type        m_Type;
+    OrderType        m_Type;
 };
 
 END_NAMESPACE_DB
