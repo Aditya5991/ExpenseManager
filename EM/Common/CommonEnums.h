@@ -17,6 +17,8 @@ namespace em
         CompareMonths,
         SwitchAccount,
         AddTags,
+        AddAccount,
+        RemoveAccount,
 
         ClearScreen,
 

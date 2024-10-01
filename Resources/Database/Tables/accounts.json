@@ -1,0 +1,27 @@
+{
+	"name": "accounts",
+	"columns": [
+		{
+			"name": "row_id",
+			"valueType": "integer",
+			"isPrimaryKey": true,
+			"isNotNull": false,
+			"isUnique": true,
+			"autoIncrement": false
+		},
+		{
+			"name": "name",
+			"valueType": "text",
+			"isPrimaryKey": false,
+			"isNotNull": true,
+			"isUnique": true
+		},
+		{
+			"name": "description",
+			"valueType": "text",
+			"isPrimaryKey": false,
+			"isNotNull": false,
+			"isUnique": false
+		}
+	]
+}

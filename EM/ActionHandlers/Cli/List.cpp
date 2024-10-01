@@ -28,7 +28,13 @@ namespace em::action_handler::cli
         if (flags.contains("tags"))
             return ListTags();
 
+        if (flags.contains("accounts"))
+            return ListAccounts();
+
         db::Condition finalCondition;
+
+        const std::string& currentAccountName = em::account::Manager::GetInstance().GetCurrentAccountName();
+        finalCondition.Add(Condition_Account::Create(currentAccountName));
 
         // handle dates
         if (flags.contains("thisMonth"))
@@ -105,8 +111,6 @@ namespace em::action_handler::cli
             }
         }
 
-
-
         bool showTags = flags.contains("showTags");
         if (options.contains("tags"))
         {
@@ -154,7 +158,7 @@ namespace em::action_handler::cli
 
     // protected
     em::action_handler::ResultSPtr List::ProcessDBTable(
-        const db::Condition& dbCondition, 
+        const db::Condition& dbCondition,
         const db::Clause_OrderBy& orderBy,
         bool showTags,
         bool showAccount,
@@ -162,12 +166,11 @@ namespace em::action_handler::cli
     {
         std::vector<db::Model> rows;
 
-        const std::string tableName = databaseMgr.GetCurrentExpenseTableName();
-        auto expenseTable = databaseMgr.GetTable(tableName);
+        auto expenseTable = databaseMgr.GetTable("expenses");
         if (!expenseTable->Select(rows, dbCondition, orderBy))
             return Result::Create(StatusCode::DBError, "Failed to retrieve from table!");
 
-        const std::string& currentAccountName = em::account::Manager::GetInstance().GetCurrentAccount()->GetName();
+        const std::string& currentAccountName = em::account::Manager::GetInstance().GetCurrentAccountName();
 
         double totalExpense = expenseTable->SumOf("price", dbCondition);
         Renderer_ExpenseTable::Render(currentAccountName, rows, totalExpense, showTags, showAccount, showLocation);
@@ -215,6 +218,22 @@ namespace em::action_handler::cli
         }
 
         Renderer_CategoryTable::Render(rows);
+        return em::action_handler::Result::Success();
+    }
+
+    // protected
+    em::action_handler::ResultSPtr List::ListAccounts()
+    {
+        std::vector<db::Model> rows;
+
+        auto table = databaseMgr.GetTable("accounts");
+        if (!table->Select(rows))
+        {
+            ERROR_LOG(ERROR_DB_SELECT_TAG);
+            return em::action_handler::Result::Create(StatusCode::DBError, ERROR_DB_SELECT_TAG);
+        }
+
+        Renderer_AccountTable::Render(rows);
         return em::action_handler::Result::Success();
     }
 
@@ -329,8 +348,7 @@ namespace em::action_handler::cli
         {
             std::vector<db::Model> rows;
 
-            const std::string tableName = databaseMgr.GetCurrentExpenseTableName();
-            auto expenseTable = databaseMgr.GetTable(tableName);
+            auto expenseTable = databaseMgr.GetTable("expenses");
             if (!expenseTable->Select(rows, cond, orderBy))
                 return Result::Create(StatusCode::DBError, "Failed to retrieve from table!");
 
@@ -350,7 +368,7 @@ namespace em::action_handler::cli
                     return e1["date"].asDateTime() < e2["date"].asDateTime();
                 });
 
-            const std::string& currentAccountName = em::account::Manager::GetInstance().GetCurrentAccount()->GetName();
+            const std::string& currentAccountName = em::account::Manager::GetInstance().GetCurrentAccountName();
 
             double totalExpense = 0.0;
             std::for_each(rowsWithinRange.begin(), rowsWithinRange.end(), 
@@ -372,8 +390,7 @@ namespace em::action_handler::cli
     // protected
     void List::GetExpenses(std::vector<db::Model>& rows, const db::Condition& cond, const db::Clause_OrderBy& orderBy) const
     {
-        const std::string tableName = databaseMgr.GetCurrentExpenseTableName();
-        auto expenseTable = databaseMgr.GetTable(tableName);
+        auto expenseTable = databaseMgr.GetTable("expenses");
         if (!expenseTable->Select(rows, cond, orderBy))
             printf("\nFailed to fetch rows!");
     }

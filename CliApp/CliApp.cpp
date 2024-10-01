@@ -84,6 +84,12 @@ em::CmdType GetCmdType(const char* cmdString)
     if (strcmp(cmdString, CmdString_AddTags) == 0)
         return em::CmdType::AddTags;
 
+    if (strcmp(cmdString, CmdString_AddAccount) == 0)
+        return em::CmdType::AddAccount;
+
+    if (strcmp(cmdString, CmdString_RemoveAccount) == 0)
+        return em::CmdType::RemoveAccount;
+    
     return em::CmdType::Invalid;
 }
 
@@ -205,8 +211,8 @@ void InitializeAccountManager()
 
 void Initialize()
 {
-    InitializeAccountManager();
     InitializeDatabase();
+    InitializeAccountManager();
     InitializeCLI();
     InitializeActionImplementor();
 }

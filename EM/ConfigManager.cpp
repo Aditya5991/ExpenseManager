@@ -8,8 +8,6 @@
 
 namespace em
 {
-
-
 	ConfigManager* ConfigManager::s_Instance = nullptr;
 
 	// public
@@ -45,19 +43,6 @@ namespace em
 		return m_Data.DefaultLocation;
 	}
 
-	// public
-	bool ConfigManager::IsValidAccountName(const std::string& dbName) const
-	{
-		const std::vector<std::string>& validDbNames = m_Data.ValidAccountNames;
-		return std::find(validDbNames.begin(), validDbNames.end(), dbName) != validDbNames.end();
-	}
-
-	// public
-	ValidAccountNames ConfigManager::GetValidAccountNames() const
-	{
-		return m_Data.ValidAccountNames;
-	}
-
 	// private
 	void ConfigManager::Initialize()
 	{
@@ -69,24 +54,21 @@ namespace em
 			Json::Value root;
 			inputStream >> root;
 
+			if (!root.isMember("default"))
+				return;
+
 			// store default Account name
 			if (root["default"].isMember("account"))
 				m_Data.DefaultAccountName = root["default"]["account"].asString();
 
 			// store default location
-			m_Data.DefaultLocation = root["default"]["location"].asString();
-
-			// store valid database names
-			DBG_ASSERT(root.isMember("validDatabaseNames"));
-			for (const auto& name : root["validDatabaseNames"])
-				m_Data.ValidAccountNames.push_back(name.asString());
-
+			if (root["default"].isMember("location"))
+				m_Data.DefaultLocation = root["default"]["location"].asString();
 		}
 		catch (std::exception& e)
 		{
 			throw em::exception::Config(e.what());
 		}
-
 	}
 
 	// public

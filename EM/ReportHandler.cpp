@@ -28,8 +28,7 @@ namespace em
         categoryTable->Select(categories);
 
         // for each expense table, go through each category, and store the expenses.
-        const std::string& expenseTableName = databaseMgr.GetCurrentExpenseTableName();
-        auto expenseTable = databaseMgr.GetTable(expenseTableName);
+        auto expenseTable = databaseMgr.GetTable("expenses");
 
         for (const db::Model& category : categories)
         {

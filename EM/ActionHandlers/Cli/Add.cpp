@@ -4,7 +4,7 @@
 #include "EM/Conditions.h"
 #include "EM/ConfigManager.h"
 #include "EM/Exceptions/General.h"
-
+#include "EM/Account/Manager.h"
 #include "DBHandler/Util.h"
 #include "DBHandler/Table.h"
 #include "Utilities/StringUtils.h"
@@ -20,7 +20,7 @@ namespace em::action_handler::cli
         assert(commandName == "add");
 
         auto categoryTable = databaseMgr.GetTable("categories");
-        auto expenseTable = databaseMgr.GetTable(databaseMgr.GetCurrentExpenseTableName());
+        auto expenseTable = databaseMgr.GetTable("expenses");
 
         db::Model model;
         // validate if the category exists
@@ -48,6 +48,8 @@ namespace em::action_handler::cli
 
             model["tags"] = tag;
         }
+
+        model["account"] = em::account::Manager::GetInstance().GetCurrentAccountName();
 
         if (!expenseTable->Insert(model))
         {

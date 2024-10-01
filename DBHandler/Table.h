@@ -146,6 +146,7 @@ public:
     bool SelectById(Model& model, int id) const;
     bool Insert(const Model& model);
     bool Update(const Model& origModel, const Model& model);
+    bool DeleteById(int rowId);
     bool Delete(const Condition& condition);
     bool IsForeignKey(const std::string& columnName, ForeignKeyReference* fkRef = nullptr) const;
     bool IsForeignKeyAccessName(const std::string& accessName, ForeignKeyReference* fkRef = nullptr) const;

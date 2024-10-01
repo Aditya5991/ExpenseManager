@@ -6,7 +6,17 @@
 
 namespace em
 {
-
+    /**
+    * This class represents the condition used to handle the filteration on 'list' command based on category.
+    */
+    class Condition_Account : public db::Condition
+    {
+    public:
+        static db::Condition* Create(const std::string& accountName)
+        {
+            return new db::Condition("account", accountName, db::Condition::Type::EQUALS);
+        }
+    };
 
     /**
     * This class represents the condition used to handle the filteration on 'list' command based on category.

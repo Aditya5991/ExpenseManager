@@ -22,7 +22,7 @@ namespace em::action_handler::cli
 
         int rowId = std::atoi(options.at("row_id").front().c_str());
 
-        auto expenseTable = databaseMgr.GetTable(databaseMgr.GetCurrentExpenseTableName());
+        auto expenseTable = databaseMgr.GetTable("expenses");
         db::Model origModel;
         if (!expenseTable->SelectById(origModel, rowId))
             return Result::GeneralFailure(std::format("ERROR: Cannot find entry with rows_id - '{}'.", rowId));
@@ -68,7 +68,7 @@ namespace em::action_handler::cli
     // private
     ResultSPtr Update::Validate(const std::string& attributeName, const std::string& attributeValue)
     {
-        auto expenseTable = databaseMgr.GetTable(databaseMgr.GetCurrentExpenseTableName());
+        auto expenseTable = databaseMgr.GetTable("expenses");
         if (!expenseTable->IsForeignKeyAccessName(attributeName) && !expenseTable->IsValidColumnName(attributeName))
             return Result::GeneralFailure(std::format("Invalid attributeName: '{}'", attributeName));
 

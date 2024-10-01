@@ -147,6 +147,10 @@
 			],
 			"flags": [
 				{
+					"name": "accounts",
+					"helperMessage": "Lists all the available a."
+				},
+				{
 					"name": "categories",
 					"helperMessage": "Lists all the available categories."
 				},
@@ -193,6 +197,36 @@
 				{
 					"name": "byDate",
 					"helperMessage": "Lists all expenses for each day"
+				}
+			]
+		},
+		{
+			"name": "addAccount",
+			"parameters": [
+				{
+					"name": "name",
+					"optionType": "alphaNumeric",
+					"helperMessage": "Name of the Account.",
+					"isMandatory": true,
+					"inOrderIndex": 1
+				},
+				{
+					"name": "description",
+					"optionType": "alphaNumeric",
+					"helperMessage": "Description about the Account.",
+					"isMandatory": false
+				}
+			]
+		},
+		{
+			"name": "removeAccount",
+			"parameters": [
+				{
+					"name": "row_id",
+					"optionType": "text",
+					"helperMessage": "Id of the account to be removed.",
+					"isMandatory": true,
+					"inOrderIndex": 1
 				}
 			]
 		},

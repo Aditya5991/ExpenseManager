@@ -1,12 +1,13 @@
 #include "pch.h"
 #include "DatabaseManager.h"
-#include "Account/Account.h"
-#include "Account/Manager.h"
 #include "Utilities/Utils.h"
 #include "ConfigManager.h"
 #include "EM/Utils.h"
+#include "DBHandler/Table.h"
 #include "DBHandler/Migration.h"
 #include "AddCategoryIdForeignKeyMigration.h"
+#include "CombineAllExpenseTableIntoOneMigration.h"
+#include "AddAccountTableMigration.h"
 
 namespace em
 {
@@ -56,7 +57,9 @@ namespace em
      // public
     void DatabaseManager::RunMigrations()
     {
-        m_Database->RunMigration(AddCategoryIdForeignKeyMigration("AddCategoryIdForeignKey", "Added ForeignKey support, so updating expense tables!"));
+        m_Database->RunMigration(AddCategoryIdForeignKeyMigration());
+        m_Database->RunMigration(CombineAllExpenseTableIntoOneMigration());
+        m_Database->RunMigration(AddAccountTableMigration());
     }
 
     // public
@@ -68,18 +71,11 @@ namespace em
             m_Database->CreateTableFromJson(path);
     }
 
-    std::string DatabaseManager::GetCurrentExpenseTableName() const
-    {
-        std::shared_ptr<account::Account> account = em::account::Manager::GetInstance().GetCurrentAccount();
-        const std::string& accountName = account->GetName();
-        const std::string& tableName = accountName + "_expense";
-        return tableName;
-    }
-
     // public
-    void DatabaseManager::OnSwitchAccount()
+    bool DatabaseManager::AccountExists(const std::string& accountName) const
     {
-        RegisterExpenseTables();
+        auto accountsTable = GetTable("accounts");
+        return accountsTable->CheckIfExists(db::Condition("name", accountName, db::Condition::Type::EQUALS));
     }
 
     // public

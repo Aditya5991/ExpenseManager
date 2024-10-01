@@ -121,4 +121,26 @@ namespace em
 
     };
 
+    /**
+    * Helper class that can be used to display Account data in the form of table for CLI.
+    */
+    class Renderer_AccountTable
+    {
+    public:
+
+        /**
+        * This function renders the data in table format.
+        *
+        * @params [in] rows
+        *       Rows representing the rows from db::Model of Account that needs to be displayed in the table.
+        */
+        static void Render(const std::vector<db::Model>& rows)
+        {
+            printf("\n Total Rows : %zd", rows.size());
+            TextTable_Account t(rows);
+            t.Print();
+        }
+
+    };
+
 }

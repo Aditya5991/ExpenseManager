@@ -28,11 +28,6 @@ namespace em
 		static void Create(const char* dbName, int openMode = db::OPEN_CREATE | db::OPEN_READWRITE);
 
 		/**
-		* Returns the current expense tables name depending on the account selected.
-		*/
-		std::string GetCurrentExpenseTableName() const;
-
-		/**
 		* Retrieves the logical database table from the DB.
 		* If the table does not exist, a new table will be creted.
 		*
@@ -56,12 +51,12 @@ namespace em
 		void RunMigrations();
 
 		/**
-		* This function is used to switch account.
-		*
-		* @params [in] accountName
-		*		Name of the account to switch to
+		* This function checks if and account exists.
+		* 
+		* @param [in] accountName
+		*		Name of the account to check the existence of.
 		*/
-		void OnSwitchAccount();
+		bool AccountExists(const std::string& accountName) const;
 
 		/**
 		* Getter for the singleton instance.

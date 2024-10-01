@@ -7,8 +7,8 @@ class AddCategoryIdForeignKeyMigration : public db::Migration
 {
 public:
 
-    AddCategoryIdForeignKeyMigration(const std::string& name, const std::string& description)
-        : db::Migration(name, description)
+    AddCategoryIdForeignKeyMigration()
+        : db::Migration("AddCategoryIdForeignKey", "Added ForeignKey support, so updating expense tables!")
     {
     }
 

@@ -19,8 +19,7 @@ namespace em::action_handler::cli
     {
         DBG_ASSERT(commandName == "remove");
 
-        const std::string tableName = databaseMgr.GetCurrentExpenseTableName();
-        auto table = databaseMgr.GetTable(tableName);
+        auto table = databaseMgr.GetTable("expenses");
 
         std::string rowIdStr = options.at("row_id").front();
 
@@ -43,10 +42,10 @@ namespace em::action_handler::cli
             return Result::Success();
         }
 
-        const std::string& currentAccountName = em::account::Manager::GetInstance().GetCurrentAccount()->GetName();
+        const std::string& currentAccountName = em::account::Manager::GetInstance().GetCurrentAccountName();
 
         printf("\nFollowing rows will be deleted: ");
-        Renderer_ExpenseTable::Render(currentAccountName, rows);
+        Renderer_ExpenseTable::Render(currentAccountName, rows, 0.0, true, true, true);
         printf("\nProceed? : ");
 
         int userInput = 0;

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "List.h"
-#include "List_AllAccounts.h"
 #include "Add.h"
 #include "Update.h"
 #include "Remove.h"
@@ -11,3 +10,5 @@
 #include "SwitchAccount.h"
 #include "GitPush.h"
 #include "AddTags.h"
+#include "AddAccount.h"
+#include "RemoveAccount.h"

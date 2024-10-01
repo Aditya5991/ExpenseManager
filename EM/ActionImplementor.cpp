@@ -43,33 +43,20 @@ namespace em
     void ActionImplementor::InitializeActionHandlers()
     {
         // clear the action handlers before assigning them again,
-        // as the same command can have different action handlers for different accounts.
         m_ActionHandlers.clear();
 
-        if (em::account::Manager::GetInstance().IsUsingAllAccounts())
-        {
-            RegisterHandler<em::action_handler::cli::List_AllAccounts>(em::CmdType::List);
-        }
-        else
-        {
-            RegisterHandler<em::action_handler::cli::List>(em::CmdType::List);
-            RegisterHandler<em::action_handler::cli::Add>(em::CmdType::Add);
-            RegisterHandler<em::action_handler::cli::Update>(em::CmdType::Update);
-            RegisterHandler<em::action_handler::cli::Remove>(em::CmdType::Remove);
-        }
-
+        RegisterHandler<em::action_handler::cli::List>(em::CmdType::List);
+        RegisterHandler<em::action_handler::cli::Add>(em::CmdType::Add);
+        RegisterHandler<em::action_handler::cli::Update>(em::CmdType::Update);
+        RegisterHandler<em::action_handler::cli::Remove>(em::CmdType::Remove);
         RegisterHandler<em::action_handler::cli::Report>(em::CmdType::Report);
         RegisterHandler<em::action_handler::cli::SwitchAccount>(em::CmdType::SwitchAccount);
         RegisterHandler<em::action_handler::cli::AddCategory>(em::CmdType::AddCategory);
         RegisterHandler<em::action_handler::cli::CompareMonths>(em::CmdType::CompareMonths);
         RegisterHandler<em::action_handler::cli::GitPush>(em::CmdType::GitPush);
         RegisterHandler<em::action_handler::cli::AddTags>(em::CmdType::AddTags);
-    }
-
-    // public
-    void ActionImplementor::OnAccountSwitched()
-    {
-        InitializeActionHandlers();
+        RegisterHandler<em::action_handler::cli::AddAccount>(em::CmdType::AddAccount);
+        RegisterHandler<em::action_handler::cli::RemoveAccount>(em::CmdType::RemoveAccount);
     }
 
     //public
@@ -90,9 +77,9 @@ namespace em
         auto actionHandler = GetActionHandler(cmdType);
         if (!actionHandler)
         {
-            std::string accountName = em::account::Manager::GetInstance().GetCurrentAccount()->GetName();
-            std::string cmdTypeStr = em::common::EnumAndStringConverter::ConvertCmdTypeEnumToString(cmdType);
-            std::string message = std::format("\nCommand: '{}' is not supported for account: '{}'", cmdTypeStr, accountName);
+            const std::string& accountName = em::account::Manager::GetInstance().GetCurrentAccountName();
+            const std::string& cmdTypeStr = em::common::EnumAndStringConverter::ConvertCmdTypeEnumToString(cmdType);
+            std::string message = std::format("\nNo Action Handler Registered for: '{}'", cmdTypeStr, accountName);
             return action_handler::Result::Create(StatusCode::CommandDoesNotExist, message);
         }
 

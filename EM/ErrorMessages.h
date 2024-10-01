@@ -1,5 +1,8 @@
 #pragma once
 
+// Application
+constexpr auto ERROR_NOT_IMPLEMENTED                = "Functionality not implemented yet.";
+
 // Database
 constexpr auto ERROR_DB_SELECT_CATEGORY             = "Failed to retrieve Categories.";
 constexpr auto ERROR_DB_SELECT_TAG                  = "Failed to retrieve Tags.";
@@ -19,6 +22,8 @@ constexpr auto ERROR_MANDATORY_ARG_NOT_PRESENT      = "Mandatory Argument Not Pr
 // Account
 constexpr auto ERROR_ACCOUNT_DOES_NOT_EXIST         = "Account does not exist: '{}'.";
 constexpr auto ERROR_ACCOUNT_ALREADY_SELECTED       = "Account '{}' is already selected.";
+constexpr auto ERROR_DB_INSERT_ACCOUNT              = "Failed to add Account: '{}'";
+constexpr auto ERROR_DB_REMOVE_ACCOUNT              = "Failed to remove Account: '{}'";
 
 constexpr auto ERROR_ACTIONHANDLER_EXECUTE          = "'{}'";
 

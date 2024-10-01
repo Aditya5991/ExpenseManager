@@ -19,7 +19,6 @@ namespace em
 		{
 			std::optional<std::string> DefaultAccountName;
 			std::string DefaultLocation;
-			ValidAccountNames ValidAccountNames;
 		};
 
 	public:
@@ -29,8 +28,6 @@ namespace em
 		bool HasDefaultAccount() const;
 		const std::string& GetDefaultAccount() const;
 		const std::string& GetDefaultLocation() const;
-		bool IsValidAccountName(const std::string& dbName) const;
-		ValidAccountNames GetValidAccountNames() const;
 
 		static ConfigManager& GetInstance();
 

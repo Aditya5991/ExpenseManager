@@ -111,6 +111,10 @@ std::string QueryGenerator::InsertQuery(const Table& table, const Model& model)
     for (; i < numColumns; ++i)
     {
         const ColumnProperty& colProp = columns[i];
+
+        if (!model.contains(colProp.Name) && colProp.IsNotNull)
+            return "";
+
         oss << "'";
         if (model.contains(colProp.Name)) // if the column value is not provided, enter empty value.
             oss << model.at(colProp.Name);

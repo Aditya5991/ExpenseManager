@@ -5,10 +5,9 @@
 namespace em::action_handler::cli
 {
 
-	class SwitchAccount : public em::action_handler::Interface
+	class RemoveAccount : public em::action_handler::Interface
 	{
 	public:
-
 		/**
 		* Same as em::action_handler::Interface::Execute(...)
 		*/
@@ -16,10 +15,7 @@ namespace em::action_handler::cli
 			const std::string& commandName,
 			const std::unordered_set<std::string>& flags,
 			const std::map<std::string, std::vector<std::string>>& options) override;
-
-	private:
-		std::string GetErrorMessage(StatusCode statusCode, const std::string& newAccountName) const;
-
 	};
 
 }
+

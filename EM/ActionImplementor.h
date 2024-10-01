@@ -18,6 +18,8 @@
 #define CmdString_SwitchAccount "switchAccount"
 #define CmdString_GitPush       "git-push"
 #define CmdString_AddTags       "addTags"
+#define CmdString_AddAccount    "addAccount"
+#define CmdString_RemoveAccount "removeAccount"
 
 #define actionImpl (em::ActionImplementor::GetInstance())
 
@@ -41,11 +43,6 @@ namespace em
         *       action_handler::ResultSPtr - representing the result of the function.
         */
         action_handler::ResultSPtr PerformAction(CmdType cmdType);
-
-        /**
-        * This function should be called when the account gets switched.
-        */
-        void OnAccountSwitched();
 
         /**
         * This creates the singleton instance.

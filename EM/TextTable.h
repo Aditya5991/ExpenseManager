@@ -423,4 +423,25 @@ namespace em
         }
     };
 
+    class TextTable_Account : public TextTable
+    {
+    public:
+        TextTable_Account(const std::vector<db::Model>& rows)
+            : TextTable()
+            , m_Rows(rows)
+        {
+            add("ROW_ID").add("NAME").add("DESCRIPTION").endOfRow();
+            for (const db::Model& row : m_Rows)
+            {
+                add(std::to_string(row.at("row_id").asInt()))
+                    .add(row.at("name").asString())
+                    .add(row.at("description").asString())
+                    .endOfRow();
+            }
+        }
+
+    private:
+        const std::vector<db::Model>& m_Rows;
+    };
+
 }

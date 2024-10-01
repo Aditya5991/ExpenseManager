@@ -1,5 +1,5 @@
 {
-	"name": "marriage_expense",
+	"name": "expenses",
 	"columns": [
 		{
 			"name": "row_id",
@@ -38,6 +38,11 @@
 			"name": "tags",
 			"valueType": "text",
 			"isForeignKey": true
+		},
+		{
+			"name": "account",
+			"valueType": "text",
+			"isNotNull": true
 		}
 	],
 	"foreignKeyReferences": [

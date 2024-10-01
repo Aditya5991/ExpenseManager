@@ -134,6 +134,14 @@ namespace em::action_handler::cli
 		em::action_handler::ResultSPtr ListTags();
 
 		/**
+		* This function handles the request of listing all the accounts available in the database
+		*
+		* @return
+		*		Object of ResultSPtr that contains the result details on execution of the function.
+		*/
+		em::action_handler::ResultSPtr ListAccounts();
+
+		/**
 		* This function handles the creation of the database condition to ignore tags from the records.
 		* 
 		* @params [in] commaSeparatedTagsToIgnore

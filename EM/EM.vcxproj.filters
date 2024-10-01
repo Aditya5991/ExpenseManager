@@ -87,12 +87,6 @@
     <ClCompile Include="ActionHandlers\Cli\List.cpp">
       <Filter>Source Files\ActionHandlers\CLI</Filter>
     </ClCompile>
-    <ClCompile Include="ActionHandlers\Cli\List_AllAccounts.cpp">
-      <Filter>Source Files\ActionHandlers\CLI</Filter>
-    </ClCompile>
-    <ClCompile Include="ActionHandlers\Cli\AddCategory.cpp">
-      <Filter>Source Files\ActionHandlers</Filter>
-    </ClCompile>
     <ClCompile Include="ActionHandlers\Cli\Remove.cpp">
       <Filter>Source Files\ActionHandlers\CLI</Filter>
     </ClCompile>
@@ -113,6 +107,15 @@
     </ClCompile>
     <ClCompile Include="ActionHandlers\Cli\Update.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionHandlers\Cli\AddCategory.cpp">
+      <Filter>Source Files\ActionHandlers\CLI</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionHandlers\Cli\AddAccount.cpp">
+      <Filter>Source Files\ActionHandlers\CLI</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionHandlers\Cli\RemoveAccount.cpp">
+      <Filter>Source Files\ActionHandlers\CLI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -178,9 +181,6 @@
     <ClInclude Include="Exceptions\EnumStringConverter.h">
       <Filter>Source Files\Exceptions</Filter>
     </ClInclude>
-    <ClInclude Include="ActionHandlers\Cli\Add.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Account\Manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -194,9 +194,6 @@
       <Filter>Source Files\ActionHandlers\CLI</Filter>
     </ClInclude>
     <ClInclude Include="ActionHandlers\Cli\List.h">
-      <Filter>Source Files\ActionHandlers\CLI</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionHandlers\Cli\List_AllAccounts.h">
       <Filter>Source Files\ActionHandlers\CLI</Filter>
     </ClInclude>
     <ClInclude Include="ActionHandlers\Cli\Report.h">
@@ -228,6 +225,21 @@
     </ClInclude>
     <ClInclude Include="AddCategoryIdForeignKeyMigration.h">
       <Filter>Source Files\Migrations</Filter>
+    </ClInclude>
+    <ClInclude Include="CombineAllExpenseTableIntoOneMigration.h">
+      <Filter>Source Files\Migrations</Filter>
+    </ClInclude>
+    <ClInclude Include="AddAccountTableMigration.h">
+      <Filter>Source Files\Migrations</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionHandlers\Cli\Add.h">
+      <Filter>Source Files\ActionHandlers\CLI</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionHandlers\Cli\AddAccount.h">
+      <Filter>Source Files\ActionHandlers\CLI</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionHandlers\Cli\RemoveAccount.h">
+      <Filter>Source Files\ActionHandlers\CLI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

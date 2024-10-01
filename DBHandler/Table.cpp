@@ -205,6 +205,11 @@ bool Table::Update(const Model& origModel, const Model& newModel)
     return ExecQuery(query);
 }
 
+bool Table::DeleteById(int rowId)
+{
+    return Delete(db::Condition("row_id", std::to_string(rowId), db::Condition::Type::EQUALS));
+}
+
 bool Table::Delete(const Condition& condition)
 {
     const std::string& query = QueryGenerator::DeleteQuery(*this, condition);
