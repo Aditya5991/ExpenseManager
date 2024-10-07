@@ -53,6 +53,12 @@ namespace em::account
         const std::string& GetCurrentAccountName() const;
 
         /**
+        * Returns the account id that is currently in use.
+        */
+        int GetCurrentAccountId() const;
+
+
+        /**
         * Destructor 
         */
         ~Manager();

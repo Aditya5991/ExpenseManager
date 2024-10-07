@@ -176,6 +176,7 @@
     <Text Include="Scope.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="07102024_AddAccountIdAsForeignKey.h" />
     <ClInclude Include="Account\Account.h" />
     <ClInclude Include="Account\Exceptions\InvalidAccountName.h" />
     <ClInclude Include="Account\Manager.h" />
@@ -206,6 +207,7 @@
     <ClInclude Include="Exceptions\Database\Common.h" />
     <ClInclude Include="Exceptions\EnumStringConverter.h" />
     <ClInclude Include="Exceptions\General.h" />
+    <ClInclude Include="Migrations.h" />
     <ClInclude Include="StatusCodes.h" />
     <ClInclude Include="ErrorMessages.h" />
     <ClInclude Include="ActionHandlers\IActionHandler.h" />

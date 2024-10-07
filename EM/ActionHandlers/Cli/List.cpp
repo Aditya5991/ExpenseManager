@@ -32,9 +32,7 @@ namespace em::action_handler::cli
             return ListAccounts();
 
         db::Condition finalCondition;
-
-        const std::string& currentAccountName = em::account::Manager::GetInstance().GetCurrentAccountName();
-        finalCondition.Add(Condition_Account::Create(currentAccountName));
+        AppendAccountCondition(finalCondition);
 
         // handle dates
         if (flags.contains("thisMonth"))
@@ -263,6 +261,15 @@ namespace em::action_handler::cli
 
         finalCondition.Add(categoryConditions);
 
+        return em::action_handler::Result::Success();
+    }
+
+    // private
+    em::action_handler::ResultSPtr List::AppendAccountCondition(db::Condition& finalCondition) const
+    {
+        int accountId = em::account::Manager::GetInstance().GetCurrentAccountId();
+        std::string accountIdAsStr = std::to_string(accountId);
+        finalCondition.Add(new db::Condition("account_id", accountIdAsStr, db::Condition::Type::EQUALS));
         return em::action_handler::Result::Success();
     }
 

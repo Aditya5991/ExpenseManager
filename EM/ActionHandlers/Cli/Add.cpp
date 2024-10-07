@@ -49,7 +49,7 @@ namespace em::action_handler::cli
             model["tags"] = tag;
         }
 
-        model["account"] = em::account::Manager::GetInstance().GetCurrentAccountName();
+        model["account_id"] = em::account::Manager::GetInstance().GetCurrentAccountId();
 
         if (!expenseTable->Insert(model))
         {

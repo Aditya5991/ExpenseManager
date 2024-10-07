@@ -5,9 +5,7 @@
 #include "EM/Utils.h"
 #include "DBHandler/Table.h"
 #include "DBHandler/Migration.h"
-#include "AddCategoryIdForeignKeyMigration.h"
-#include "CombineAllExpenseTableIntoOneMigration.h"
-#include "AddAccountTableMigration.h"
+#include "Migrations.h"
 
 namespace em
 {
@@ -60,6 +58,7 @@ namespace em
         m_Database->RunMigration(AddCategoryIdForeignKeyMigration());
         m_Database->RunMigration(CombineAllExpenseTableIntoOneMigration());
         m_Database->RunMigration(AddAccountTableMigration());
+        m_Database->RunMigration(AddAccountIdAsForeignKeyMigration());
     }
 
     // public

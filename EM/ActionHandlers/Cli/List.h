@@ -18,6 +18,7 @@ namespace em::action_handler::cli
 	private:
 		em::action_handler::ResultSPtr AppendCategoryCondition(db::Condition& finalCondition, const std::string& commaSeparatedCategories) const;
 		em::action_handler::ResultSPtr AppendTagsCondition(db::Condition& finalCondition, const std::string& commaSeparatedTags) const;
+		em::action_handler::ResultSPtr AppendAccountCondition(db::Condition& finalCondition) const;
 
 	protected:
 		/**

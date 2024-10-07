@@ -40,8 +40,9 @@
 			"isForeignKey": true
 		},
 		{
-			"name": "account",
-			"valueType": "text",
+			"name": "account_id",
+			"valueType": "int",
+			"isForeignKey": true,
 			"isNotNull": true
 		}
 	],
@@ -50,6 +51,11 @@
 			"columnName": "category_id",
 			"referenceTableName": "categories",
 			"accessName": "category"
+		},
+		{
+			"columnName": "account_id",
+			"referenceTableName": "accounts",
+			"accessName": "account"
 		}
 	]
 }

@@ -4,6 +4,7 @@
 #include "../ConfigManager.h"
 #include "Exceptions/InvalidAccountName.h"
 #include "EM/DatabaseManager.h"
+#include "DBHandler/Table.h"
 
 namespace em::account
 {
@@ -57,6 +58,15 @@ namespace em::account
     const std::string& Manager::GetCurrentAccountName() const
     {
         return m_CurrentAccountName;
+    }
+
+    // public
+    int Manager::GetCurrentAccountId() const
+    {
+        auto accountsTable = databaseMgr.GetTable("accounts");
+        db::Model model;
+        accountsTable->Select(model, db::Condition("name", m_CurrentAccountName, db::Condition::Type::EQUALS));
+        return model["row_id"].asInt();
     }
 
     // private

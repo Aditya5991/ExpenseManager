@@ -241,5 +241,11 @@
     <ClInclude Include="ActionHandlers\Cli\RemoveAccount.h">
       <Filter>Source Files\ActionHandlers\CLI</Filter>
     </ClInclude>
+    <ClInclude Include="07102024_AddAccountIdAsForeignKey.h">
+      <Filter>Source Files\Migrations</Filter>
+    </ClInclude>
+    <ClInclude Include="Migrations.h">
+      <Filter>Source Files\Migrations</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
