@@ -52,11 +52,11 @@
     <Filter Include="Source Files\Migrations">
       <UniqueIdentifier>{e16e7ad4-98e3-4349-a89b-ea7111b85333}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\ActionImplementor">
+      <UniqueIdentifier>{429830ac-0bd5-4b5b-bb71-91dc0ea4b954}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ActionImplementor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ReportHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -117,6 +117,15 @@
     <ClCompile Include="ActionHandlers\Cli\RemoveAccount.cpp">
       <Filter>Source Files\ActionHandlers\CLI</Filter>
     </ClCompile>
+    <ClCompile Include="App.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionImplementor\IActionImplementor.cpp">
+      <Filter>Source Files\ActionImplementor</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionImplementor\Cli.cpp">
+      <Filter>Source Files\ActionImplementor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Scope.txt">
@@ -129,9 +138,6 @@
     </ClInclude>
     <ClInclude Include="Assertion.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionImplementor.h">
-      <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="TextTable.h">
       <Filter>Source Files</Filter>
@@ -246,6 +252,15 @@
     </ClInclude>
     <ClInclude Include="Migrations.h">
       <Filter>Source Files\Migrations</Filter>
+    </ClInclude>
+    <ClInclude Include="App.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionImplementor\IActionImplementor.h">
+      <Filter>Source Files\ActionImplementor</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionImplementor\Cli.h">
+      <Filter>Source Files\ActionImplementor</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -161,8 +161,10 @@
     <ClCompile Include="ActionHandlers\Cli\Report.cpp" />
     <ClCompile Include="ActionHandlers\Cli\SwitchAccount.cpp" />
     <ClCompile Include="ActionHandlers\Cli\Update.cpp" />
-    <ClCompile Include="ActionImplementor.cpp" />
+    <ClCompile Include="ActionImplementor\Cli.cpp" />
     <ClCompile Include="ActionHandlers\Cli\Add.cpp" />
+    <ClCompile Include="ActionImplementor\IActionImplementor.cpp" />
+    <ClCompile Include="App.cpp" />
     <ClCompile Include="Common\EnumAndStringConverter.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../pch.h</PrecompiledHeaderFile>
     </ClCompile>
@@ -193,8 +195,10 @@
     <ClInclude Include="ActionHandlers\Cli\Report.h" />
     <ClInclude Include="ActionHandlers\Cli\SwitchAccount.h" />
     <ClInclude Include="ActionHandlers\Cli\Update.h" />
-    <ClInclude Include="ActionImplementor.h" />
+    <ClInclude Include="ActionImplementor\IActionImplementor.h" />
+    <ClInclude Include="ActionImplementor\Cli.h" />
     <ClInclude Include="AddAccountTableMigration.h" />
+    <ClInclude Include="App.h" />
     <ClInclude Include="Assertion.h" />
     <ClInclude Include="CombineAllExpenseTableIntoOneMigration.h" />
     <ClInclude Include="Common\CommonEnums.h" />

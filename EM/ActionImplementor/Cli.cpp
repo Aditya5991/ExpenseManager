@@ -1,49 +1,39 @@
-#include "pch.h"
-#include "ActionImplementor.h"
-#include "Account/Manager.h"
-#include "Account/Account.h"
-#include "Common/CommonEnums.h"
-#include "Common/EnumAndStringConverter.h"
+#include "EM/pch.h"
+#include "EM/ActionImplementor/Cli.h"
+#include "EM/Account/Manager.h"
+#include "EM/Account/Account.h"
+#include "EM/Common/CommonEnums.h"
+#include "EM/Common/EnumAndStringConverter.h"
+#include "EM/ActionHandlers/Cli/ActionHandlers.h"
+#include "EM/TextTable.h"
+#include "EM/Conditions.h"
+#include "EM/ReportHandler.h"
+#include "EM/Renderer_TextTable.h"
+#include "EM/ErrorMessages.h"
 #include "CLIParser/CLIParser.h"
 #include "DBHandler/Util.h"
-#include "ActionHandlers/Cli/ActionHandlers.h"
-#include "TextTable.h"
-#include "Conditions.h"
-#include "ReportHandler.h"
-#include "Renderer_TextTable.h"
-#include "ErrorMessages.h"
 
-namespace em
+namespace em::action_impl
 {
-    ActionImplementor* ActionImplementor::s_Instance = nullptr;
-
-    // private
-    ActionImplementor::ActionImplementor()
+    // protected
+    Cli::Cli()
     {
     }
 
-	ActionImplementor::~ActionImplementor()
+    // public
+	Cli::~Cli()
 	{
-        for (auto handler : m_ActionHandlers)
+        for (auto &[cmdType, actionHandler] : m_ActionHandlers)
         {
-            delete handler.second;
-            handler.second = nullptr;
+            delete actionHandler;
+            actionHandler = nullptr;
         }
-        delete s_Instance;
-        s_Instance = nullptr;
 	}
 
-    // private
-    void ActionImplementor::Initialize()
+    // public
+    void Cli::InitializeActionHandlers()
     {
-        InitializeActionHandlers();
-    }
-
-    // private
-    void ActionImplementor::InitializeActionHandlers()
-    {
-        // clear the action handlers before assigning them again,
-        m_ActionHandlers.clear();
+        base::InitializeActionHandlers();
 
         RegisterHandler<em::action_handler::cli::List>(em::CmdType::List);
         RegisterHandler<em::action_handler::cli::Add>(em::CmdType::Add);
@@ -60,7 +50,7 @@ namespace em
     }
 
     //public
-    action_handler::ResultSPtr ActionImplementor::PerformAction(CmdType cmdType)
+    action_handler::ResultSPtr Cli::PerformAction(CmdType cmdType)
     {
         if (cmdType == CmdType::ClearScreen)
         {
@@ -87,27 +77,11 @@ namespace em
         return result;
     }
 
-    // private
-    StatusCode ActionImplementor::DisplayHelp()
+    // protected
+    StatusCode Cli::DisplayHelp()
     {
         cliParser.DisplayHelp();
         return StatusCode::Success;
     }
-
-    // public static
-    void ActionImplementor::Create()
-    {
-        DBG_ASSERT(s_Instance == nullptr);
-        s_Instance = new ActionImplementor();
-        s_Instance->Initialize();
-    }
-
-    // public static
-    ActionImplementor& ActionImplementor::GetInstance()
-    {
-        DBG_ASSERT(s_Instance != nullptr);
-        return *s_Instance;
-    }
-
 
 }
