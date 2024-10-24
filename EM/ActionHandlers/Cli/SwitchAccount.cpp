@@ -1,8 +1,8 @@
 #include "EM/pch.h"
 #include "SwitchAccount.h"
-#include "../../Account/Manager.h"
-#include "../../DatabaseManager.h"
-#include "../../ActionImplementor.h"
+#include "EM/Account/Manager.h"
+#include "EM/DatabaseManager.h"
+#include "EM/ActionImplementor/Cli.h"
 
 namespace em::action_handler::cli
 {

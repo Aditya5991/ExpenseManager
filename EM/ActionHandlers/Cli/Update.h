@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../IActionHandler.h"
+#include "EM/ActionHandlers/IActionHandler.h"
 
 namespace db { struct ForeignKeyReference; }
 

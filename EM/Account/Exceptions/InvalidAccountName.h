@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../Exceptions/Base.h"
+#include "EM/Exceptions/Base.h"
 
 namespace em::account::exceptions
 {

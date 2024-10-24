@@ -1,6 +1,6 @@
-#include "../pch.h"
+#include "EM/pch.h"
 #include "EnumAndStringConverter.h"
-#include "../Exceptions/EnumStringConverter.h"
+#include "EM/Exceptions/EnumStringConverter.h"
 
 
 namespace em::common

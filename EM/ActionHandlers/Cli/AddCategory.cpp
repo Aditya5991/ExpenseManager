@@ -1,4 +1,4 @@
-#include "../../pch.h"
+#include "EM/pch.h"
 #include "AddCategory.h"
 #include "EM/DatabaseManager.h"
 #include "EM/Conditions.h"

@@ -2,7 +2,7 @@
 
 #include <format>
 
-#include "../../Exceptions/Base.h"
+#include "EM/Exceptions/Base.h"
 
 namespace em::exception
 {
