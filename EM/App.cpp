@@ -25,6 +25,7 @@ namespace em::app
 
 	Interface::Interface(AppType appType)
 		: m_AppType(appType)
+		, m_IsFirstRun(false)
 	{
 	}
 
@@ -34,21 +35,34 @@ namespace em::app
         return m_ActionImplementor->PerformAction(cmdType);
     }
 
-	// private
-	void Interface::InitializeDatabase()
+	// protected
+	bool Interface::InitializeDatabase()
 	{
-		std::filesystem::path configPath = em::utils::GetDatabaseConfigFilePath();
+		try
+		{
+			std::filesystem::path configPath = em::utils::GetDatabaseConfigFilePath();
 
-		Json::Value root;
-		std::ifstream ifs(configPath);
+			Json::Value root;
+			std::ifstream ifs(configPath);
 
-		ifs >> root;
+			ifs >> root;
 
-		std::string databaseName = root["name"].asString();
+			std::string databaseName = root["name"].asString();
 
-		em::DatabaseManager::Create(databaseName.c_str());
-		em::DatabaseManager::GetInstance().RunMigrations();
-		em::DatabaseManager::GetInstance().RegisterExpenseTables();
+			em::DatabaseManager::Create(databaseName.c_str());
+
+			em::DatabaseManager& dbMgr = em::DatabaseManager::GetInstance();
+			dbMgr.RegisterExpenseTables();
+			m_IsFirstRun = dbMgr.IsNewlyCreatedDatabase();
+			dbMgr.RunMigrations();
+		}
+		catch (std::exception& e)
+		{
+			printf("\nFailed to Inititlize Database!");
+			return false;
+		}
+
+		return true;
 	}
 
 }

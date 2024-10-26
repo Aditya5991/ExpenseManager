@@ -36,6 +36,29 @@ namespace em::account
     }
 
     // public
+    StatusCode Manager::CreateAccount(const std::string& newAccountName)
+    {
+        if (AccountExists(newAccountName))
+        {
+            printf("\nAccount Already exists: %s", newAccountName.c_str());
+            return StatusCode::AccountAlreadySelected;
+        }
+
+        auto& dbMgr = DatabaseManager::GetInstance();
+        auto accountTable = dbMgr.GetTable("accounts");
+
+        db::Model model;
+        model["name"] = newAccountName;
+        if (!accountTable->Insert(model))
+        {
+            printf("\nError while creating account with name: %s", newAccountName.c_str());
+            return StatusCode::GeneralFailure;
+        }
+
+        return StatusCode::Success;
+    }
+
+    // public
     StatusCode Manager::OnSwitchAccount(const std::string& newAccountName)
     {
         if (m_CurrentAccountName == newAccountName)
@@ -51,7 +74,8 @@ namespace em::account
     // public
     bool Manager::AccountExists(const std::string& accountName) const
     {
-        return DatabaseManager::GetInstance().AccountExists(accountName);
+        auto accountsTable = DatabaseManager::GetInstance().GetTable("accounts");
+        return accountsTable->CheckIfExists(db::Condition("name", accountName, db::Condition::Type::EQUALS));
     }
 
     // public

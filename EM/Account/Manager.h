@@ -21,13 +21,24 @@ namespace em::account
         static Manager& GetInstance();
 
         /**
+        * This function creates a new account in the database.
+        * 
+        * @params [in] newAccountName
+        *       Name of the new account that we want to create.
+        *
+        * @returns
+        *       Status Code indicating success/failure.
+        */
+        StatusCode CreateAccount(const std::string& newAccountName);
+
+        /**
         * This function is used to switch accounts.
         * 
-        * @params [in] accountName
+        * @params [in] newAccountName
         *       Name of the account that we want to switch to.
         * 
         * @returns 
-        *       True, if account was switched successfully.
+        *       Status Code indicating success/failure.
         */
         StatusCode OnSwitchAccount(const std::string& newAccountName);
 

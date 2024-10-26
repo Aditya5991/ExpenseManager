@@ -47,12 +47,21 @@ public:
 
     CliApp() : base(em::app::AppType::CLI) {}
 
-    virtual void Initialize() override
+    virtual bool Initialize() override
     {
-        InitializeDatabase();
-        InitializeAccountManager();
-        InitializeCLI();
-        InitializeActionImplementor();
+        if (!InitializeDatabase())
+            return false;
+
+        if (!InitializeAccountManager())
+            return false;
+
+        if (!InitializeCLI())
+            return false;
+
+        if (!InitializeActionImplementor())
+            return false;
+
+        return true;
     }
 
     virtual void Start() override
@@ -93,15 +102,20 @@ public:
         }
     }
 
-    void InitializeActionImplementor()
+    bool InitializeActionImplementor() override
     {
-        assert(m_ActionImplementor == nullptr);
+        if (m_ActionImplementor != nullptr)
+        {
+            assert(false);
+            return false;
+        }
 
         m_ActionImplementor = std::make_unique<em::action_impl::Cli>();
         m_ActionImplementor->InitializeActionHandlers();
+        return true;
     }
 
-    void InitializeCLI()
+    bool InitializeCLI()
     {
         try
         {
@@ -160,31 +174,49 @@ public:
         catch (std::exception& e)
         {
             printf("\nFailed to read cliConfig.json: %s", e.what());
+            return false;
         }
+
+        return true;
     }
 
-    void InitializeAccountManager()
+    bool InitializeAccountManager() override
     {
         em::account::Manager::Create();
 
-        std::string accountName;
-        if (em::ConfigManager::GetInstance().HasDefaultAccount())
-            accountName = em::ConfigManager::GetInstance().GetDefaultAccount();
-        else
-            GetAccountNameInput(accountName);
+        auto& configMgr = em::ConfigManager::GetInstance();
+        auto& accountMgr = em::account::Manager::GetInstance();
 
-        if (!em::account::Manager::GetInstance().AccountExists(accountName))
-            throw em::exception::Config(std::format("Invalid account : {}", accountName));
+        std::string accountName;
+        if (m_IsFirstRun)
+        {
+            // No account will exist when you first run the application, so ask to create an account.
+            accountName = GetAccountNameInput(true);
+            accountMgr.CreateAccount(accountName);
+        }
+        else
+        {
+            accountName = configMgr.HasDefaultAccount() ? configMgr.GetDefaultAccount() : GetAccountNameInput(false);
+            if (!accountMgr.AccountExists(accountName))
+            {
+                printf("\nAccount does not exist account : %s", accountName.c_str());
+                return false;
+            }
+        }
 
         printf("\nActive Account: %s", accountName.c_str());
-        em::account::Manager::GetInstance().SetCurrentAccountName(accountName);
+        accountMgr.SetCurrentAccountName(accountName);
+
+        return true;
     }
 
-    void GetAccountNameInput(std::string& accountName) const
+    std::string GetAccountNameInput(bool isFirstRun) const
     {
-        std::cout << "Account: ";
+        std::string accountName;
+        std::cout << (isFirstRun ? "\nEnter name for a new Account: " : "\nAccount: ");
         std::getline(std::cin, accountName);
         accountName.erase(accountName.find_last_not_of(" ") + 1);
+        return accountName;
     }
 
     void GetCommandString(std::string& commandStr, std::vector<std::string>& args)
@@ -274,7 +306,12 @@ int main(int argc, char** argv)
     try
     {
         CliApp app;
-        app.Initialize();
+        if (!app.Initialize())
+        {
+            printf("\nFailed to Initialize Application!");
+            return 1;
+        }
+
         app.Start();
     }
     catch (std::exception& e)

@@ -16,7 +16,7 @@
 		},
 		{
 			"name": "category_id",
-			"valueType": "int",
+			"valueType": "integer",
 			"isForeignKey": true,
 			"isNotNull": true
 		},
@@ -41,7 +41,7 @@
 		},
 		{
 			"name": "account_id",
-			"valueType": "int",
+			"valueType": "integer",
 			"isForeignKey": true,
 			"isNotNull": true
 		}

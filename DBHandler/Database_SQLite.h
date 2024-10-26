@@ -40,7 +40,7 @@ public:
     * This function checks if the migration has already been run, if no, then it will call the Migration::Run() function
     * and execute all the commands present there
     */
-    void RunMigration(const Migration& migration);
+    void RunMigration(const Migration& migrationm, bool isFirstRun = false);
 
     // queries
     SQLite::Column ExecAndGet(const std::string& query);
@@ -52,6 +52,8 @@ public:
 private:
     std::vector<ColumnProperty> GetMigrationTableColumnProperties();
     void CreateMigrationTable();
+
+    void InsertMigrationToDb(const Migration& migration);
 
     SQLite::Database* GetImpl() { return m_DBImpl; }
     const SQLite::Database* GetImpl() const { return m_DBImpl; }

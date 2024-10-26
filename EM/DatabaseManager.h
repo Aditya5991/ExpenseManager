@@ -51,12 +51,9 @@ namespace em
 		void RunMigrations();
 
 		/**
-		* This function checks if and account exists.
-		* 
-		* @param [in] accountName
-		*		Name of the account to check the existence of.
+		* This function returns if the database was newly created, i.e. this is the first run of the application.
 		*/
-		bool AccountExists(const std::string& accountName) const;
+		bool IsNewlyCreatedDatabase() const;
 
 		/**
 		* Getter for the singleton instance.
@@ -73,6 +70,7 @@ namespace em
 		DatabaseManager(DatabaseManager&&) = default;
 
 		std::unique_ptr<db::Database_SQLite> m_Database;
+		bool m_IsNewlyCreatedDatabase;
 
 		static std::mutex s_Mutex;
 		static DatabaseManager* s_Instance;

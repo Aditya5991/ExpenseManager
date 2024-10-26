@@ -63,8 +63,16 @@ void Database_SQLite::CreateMigrationTable()
     m_Tables.insert(std::make_pair(migrationTable->GetName(), migrationTable));
 }
 
-void Database_SQLite::RunMigration(const Migration& migration) 
+void Database_SQLite::RunMigration(const Migration& migration, bool isFirstRun)
 {
+    // Do not run migration if it's the first run of the app.
+    // but add migration to the 'migration' db as we don't want to run it at all.
+    if (isFirstRun)
+    {
+        InsertMigrationToDb(migration);
+        return;
+    }
+
     // check if the migration has already run
     auto table = GetTable("migrations");
     if (table->CheckIfExists("name", migration.GetName()))
@@ -78,6 +86,13 @@ void Database_SQLite::RunMigration(const Migration& migration)
         return;
     }
 
+    InsertMigrationToDb(migration);
+}
+
+// private
+void Database_SQLite::InsertMigrationToDb(const Migration& migration)
+{
+    auto table = GetTable("migrations");
     Model model;
     model["name"] = migration.GetName();
     model["description"] = migration.GetDescription();

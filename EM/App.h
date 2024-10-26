@@ -19,17 +19,18 @@ namespace em::app
 	public:
 		Interface(AppType appType);
 		virtual void Start() = 0;
-		virtual void Initialize() = 0;
+		virtual bool Initialize() = 0;
 		em::action_handler::ResultSPtr PerformAction(const std::string& commandStr, CmdType cmdType);
 
 	protected:
-		virtual void InitializeDatabase();
-		virtual void InitializeAccountManager() = 0;
-		virtual void InitializeActionImplementor() = 0;
+		virtual bool InitializeDatabase();
+		virtual bool InitializeAccountManager() = 0;
+		virtual bool InitializeActionImplementor() = 0;
 
 	protected:
 		AppType m_AppType;
 		std::unique_ptr<em::action_impl::Interface> m_ActionImplementor;
+		bool m_IsFirstRun;
 	};
 
 }

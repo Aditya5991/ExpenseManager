@@ -6,6 +6,7 @@
 #include "DBHandler/Table.h"
 #include "DBHandler/Migration.h"
 #include "Migrations.h"
+#include "Utilities/FileUtils.h"
 
 namespace em
 {
@@ -33,6 +34,8 @@ namespace em
 	// public
     DatabaseManager::DatabaseManager(const char* dbName, int openMode)
     {
+        std::filesystem::path dbFilepath = utils::GetExecutableDirPath() / dbName;
+        m_IsNewlyCreatedDatabase = !(::utils::file::Exists(dbFilepath));
         m_Database = std::make_unique<db::Database_SQLite>(dbName, openMode);
     }
 
@@ -55,10 +58,11 @@ namespace em
      // public
     void DatabaseManager::RunMigrations()
     {
-        m_Database->RunMigration(AddCategoryIdForeignKeyMigration());
-        m_Database->RunMigration(CombineAllExpenseTableIntoOneMigration());
-        m_Database->RunMigration(AddAccountTableMigration());
-        m_Database->RunMigration(AddAccountIdAsForeignKeyMigration());
+        bool isFirstRun = m_IsNewlyCreatedDatabase;
+        m_Database->RunMigration(AddCategoryIdForeignKeyMigration(), isFirstRun);
+        m_Database->RunMigration(CombineAllExpenseTableIntoOneMigration(), isFirstRun);
+        m_Database->RunMigration(AddAccountTableMigration(), isFirstRun);
+        m_Database->RunMigration(AddAccountIdAsForeignKeyMigration(), isFirstRun);
     }
 
     // public
@@ -71,10 +75,9 @@ namespace em
     }
 
     // public
-    bool DatabaseManager::AccountExists(const std::string& accountName) const
+    bool DatabaseManager::IsNewlyCreatedDatabase() const
     {
-        auto accountsTable = GetTable("accounts");
-        return accountsTable->CheckIfExists(db::Condition("name", accountName, db::Condition::Type::EQUALS));
+        return m_IsNewlyCreatedDatabase;
     }
 
     // public
