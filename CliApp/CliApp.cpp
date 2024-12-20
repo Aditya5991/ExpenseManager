@@ -13,7 +13,9 @@
 #include "EM/Account/Manager.h"
 #include "EM/Utils.h"
 #include "EM/ActionImplementor/Cli.h"
+#include "EM/ActionHandlers/Cli/AddReminder.h"
 #include "JsonHelper/json.h"
+#include "Utilities/StringUtils.h"
 
 #include "DBHandler/Table.h"
 
@@ -36,6 +38,7 @@
 #define CmdString_AddTags       "addTags"
 #define CmdString_AddAccount    "addAccount"
 #define CmdString_RemoveAccount "removeAccount"
+#define CmdString_AddReminder   "addReminder"
 
 
 #define DATABASE_FILE_NAME "expense.db"
@@ -64,8 +67,70 @@ public:
         return true;
     }
 
+    void ShowReminder(const std::string& reminderName)
+    {
+        printf("\nReminder: %s", reminderName.c_str());
+    }
+
+    void UpdateReminders()
+    {
+        // check for reminders
+        auto table = databaseMgr.GetTable("reminders");
+        std::vector<db::Model> remindersModel;
+        if (!table->Select(remindersModel))
+        {
+            printf("\nFailed to fetch reminders!");
+            return;
+        }
+
+        for (const db::Model& reminder : remindersModel)
+        {
+            const std::string& reminderName = reminder.at("name").asString();
+            em::ReminderType reminderType = static_cast<em::ReminderType>(reminder.at("type").asInt());
+            const std::string& dateData = reminder.at("date_data").asString();
+            db::DateTime todaysDate = db::DateTime::GetCurrentDate();
+
+            bool showReminder = false;
+            if (reminderType == em::ReminderType::OneTime)
+            {
+                db::DateTime dateTime(dateData);
+                if (todaysDate == dateTime)
+                    showReminder = true;
+            }
+            else if(reminderType == em::ReminderType::Daily)
+            {
+                showReminder = true;
+            }
+            else if (reminderType == em::ReminderType::Weekly)
+            {
+                if (todaysDate.GetDayName() == dateData)
+                    showReminder = true;
+            }
+            else if (reminderType == em::ReminderType::Monthly)
+            {
+                if(todaysDate.GetDay() == std::stoi(dateData))
+                    showReminder = true;
+            }
+            else if (reminderType == em::ReminderType::Yearly)
+            {
+                std::vector<std::string> dayMonth = utils::string::SplitString(dateData, '-');
+                const std::string& month = dayMonth.front();
+                const std::string& day = dayMonth.back();
+
+                if (todaysDate.GetDay() == std::stoi(day) &&
+                    todaysDate.GetMonth() == std::stoi(month))
+                    showReminder = true;
+            }
+
+            if(showReminder)
+                ShowReminder(reminderName);
+        }
+    }
+
     virtual void Start() override
     {
+        UpdateReminders();
+
         bool quit = false;
         while (!quit)
         {
@@ -279,6 +344,9 @@ public:
 
         if (strcmp(cmdString, CmdString_RemoveAccount) == 0)
             return em::CmdType::RemoveAccount;
+
+        if (strcmp(cmdString, CmdString_AddReminder) == 0)
+            return em::CmdType::AddReminder;
     
         return em::CmdType::Invalid;
     }

@@ -1,0 +1,34 @@
+{
+	"name": "reminders",
+	"columns": [
+		{
+			"name": "row_id",
+			"valueType": "integer",
+			"isPrimaryKey": true,
+			"isNotNull": false,
+			"isUnique": true,
+			"autoIncrement": false
+		},
+		{
+			"name": "name",
+			"valueType": "text",
+			"isPrimaryKey": false,
+			"isNotNull": true,
+			"isUnique": false
+		},
+		{
+			"name": "type",
+			"valueType": "integer",
+			"isPrimaryKey": false,
+			"isNotNull": true,
+			"isUnique": false
+		},
+		{
+			"name": "date_data",
+			"valueType": "text",
+			"isPrimaryKey": false,
+			"isNotNull": false,
+			"isUnique": false
+		}
+	]
+}

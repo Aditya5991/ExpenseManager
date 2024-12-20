@@ -12,3 +12,4 @@
 #include "AddTags.h"
 #include "AddAccount.h"
 #include "RemoveAccount.h"
+#include "AddReminder.h"

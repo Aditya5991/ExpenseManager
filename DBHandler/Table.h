@@ -102,15 +102,35 @@ struct DBValue
         return !m_Value.has_value();
     }
 
+    bool IsInt() const
+    {
+        return m_Value.type() == typeid(int);
+    }
+
+    bool IsDouble() const
+    {
+        return m_Value.type() == typeid(double);
+    }
+
+    bool IsString() const
+    {
+        return m_Value.type() == typeid(std::string);
+    }
+
+    bool IsBool() const
+    {
+        return m_Value.type() == typeid(bool);
+    }
+
     friend std::ostringstream& operator<< (std::ostringstream& oss, const DBValue& value)
     {
-        if (value.m_Value.type() == typeid(int))
+        if (value.IsInt())
             oss << value.asInt();
-        else if (value.m_Value.type() == typeid(double))
+        else if (value.IsDouble())
             oss << value.asDouble();
-        else if (value.m_Value.type() == typeid(std::string))
+        else if (value.IsString())
             oss << value.asString();
-        else if (value.m_Value.type() == typeid(bool))
+        else if (value.IsBool())
             oss << value.asBool();
 
         return oss;

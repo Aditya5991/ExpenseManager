@@ -19,6 +19,7 @@ namespace em
         AddTags,
         AddAccount,
         RemoveAccount,
+        AddReminder,
 
         ClearScreen,
 

@@ -14,4 +14,6 @@ namespace utils::general
     bool IsInteger(const std::string& str);
 
     bool IsAlphaNumeric(const std::string& str);
+
+    bool IsAlphabets(const std::string& str);
 }

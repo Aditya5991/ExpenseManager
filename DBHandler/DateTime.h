@@ -31,6 +31,12 @@ public:
     static std::string GetThisDay();
     static std::string GetThisMonth();
     static std::string GetThisYear();
+    static bool IsValidDateString(const std::string& inputDate, char separator = '-');
+    static bool IsValidMonthName(const std::string& monthName);
+    static bool IsValidDayName(const std::string& dayName);
+    static bool IsValidMonth(int month);
+    static bool IsValidDay(int day);
+    static std::string GetDayNameFromInteger(int day);
 
     int GetSecond() const { return m_Second; }
     int GetMinute() const { return m_Minute; }
@@ -38,6 +44,7 @@ public:
     int GetDay() const { return m_Day; }
     int GetMonth() const { return m_Month; }
     int GetYear() const { return m_Year; }
+    const std::string& GetDayName() const { return m_DayName; }
 
     std::string AsString(bool useTime = false) const;
 
@@ -49,6 +56,7 @@ private:
     int m_Month;
     int m_Year;
     char m_Separator;
+    std::string m_DayName;
 };
 
 END_NAMESPACE_DB

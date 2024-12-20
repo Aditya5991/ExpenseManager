@@ -29,4 +29,10 @@ namespace utils::general
         return IsDouble(str) || std::find_if(str.begin(), str.end(),
             [](char c) { return !(isalnum(c) || (c == ' ')); }) == str.end();
     }
+
+    bool IsAlphabets(const std::string& str)
+    {
+        return std::find_if(str.begin(), str.end(),
+            [](char c) { return !isalnum(c); }) == str.end();
+    }
 }

@@ -191,6 +191,10 @@
 					"helperMessage": "Lists all the available tags."
 				},
 				{
+					"name": "reminders",
+					"helperMessage": "Lists all the active reminders."
+				},
+				{
 					"name": "excludeTags",
 					"helperMessage": "Lists all expenses with no tags."
 				},
@@ -318,6 +322,44 @@
 					"name": "ids",
 					"optionType": "text",
 					"helperMessage": "Comma separated ids of the tags to be removed.",
+					"isMandatory": true,
+					"inOrderIndex": 1
+				}
+			]
+		},
+		{
+			"name": "addReminder",
+			"parameters": [
+				{
+					"name": "name",
+					"optionType": "text",
+					"helperMessage": "Name of the Reminder.",
+					"isMandatory": true,
+					"inOrderIndex": 1
+				},
+				{
+					"name": "type",
+					"optionType": "text",
+					"helperMessage": "Type of the reminded (OneTime, Daily, Weekly etc.).",
+					"isMandatory": true,
+					"inOrderIndex": 2
+				},
+				{
+					"name": "dateData",
+					"optionType": "text",
+					"helperMessage": "Data required for date.",
+					"isMandatory": false,
+					"inOrderIndex": 3
+				}
+			]
+		},
+		{
+			"name": "removeReminders",
+			"parameters": [
+				{
+					"name": "ids",
+					"optionType": "text",
+					"helperMessage": "Comma separated ids of the reminders to be removed.",
 					"isMandatory": true,
 					"inOrderIndex": 1
 				}

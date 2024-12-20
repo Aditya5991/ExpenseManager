@@ -39,6 +39,20 @@ namespace utils::string
         RTrim(s);
     }
 
+    std::string ToLower(const std::string& str)
+    {
+        std::string lowerStr = str;
+        std::transform(lowerStr.begin(), lowerStr.end(), lowerStr.begin(), [](char ch) { return std::tolower(ch); });
+        return lowerStr;
+    }
+
+    std::string ToUpper(const std::string& str)
+    {
+        std::string upperStr = str;
+        std::transform(upperStr.begin(), upperStr.end(), upperStr.begin(), [](char ch) { return std::toupper(ch); });
+        return upperStr;
+    }
+
     void Format(std::string& unformatedString, const std::vector<std::string>& mappings)
     {
         for (const auto& iter : mappings)

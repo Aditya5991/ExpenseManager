@@ -153,6 +153,7 @@
     <ClCompile Include="Account\Manager.cpp" />
     <ClCompile Include="ActionHandlers\Cli\AddAccount.cpp" />
     <ClCompile Include="ActionHandlers\Cli\AddCategory.cpp" />
+    <ClCompile Include="ActionHandlers\Cli\AddReminder.cpp" />
     <ClCompile Include="ActionHandlers\Cli\AddTags.cpp" />
     <ClCompile Include="ActionHandlers\Cli\CompareMonths.cpp" />
     <ClCompile Include="ActionHandlers\Cli\GitPush.cpp" />
@@ -187,6 +188,7 @@
     <ClInclude Include="ActionHandlers\Cli\Add.h" />
     <ClInclude Include="ActionHandlers\Cli\AddAccount.h" />
     <ClInclude Include="ActionHandlers\Cli\AddCategory.h" />
+    <ClInclude Include="ActionHandlers\Cli\AddReminder.h" />
     <ClInclude Include="ActionHandlers\Cli\AddTags.h" />
     <ClInclude Include="ActionHandlers\Cli\CompareMonths.h" />
     <ClInclude Include="ActionHandlers\Cli\GitPush.h" />

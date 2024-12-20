@@ -31,6 +31,9 @@ namespace em::action_handler::cli
         if (flags.contains("accounts"))
             return ListAccounts();
 
+        if (flags.contains("reminders"))
+            return ListReminders();
+
         db::Condition finalCondition;
         AppendAccountCondition(finalCondition);
 
@@ -202,7 +205,7 @@ namespace em::action_handler::cli
             return em::action_handler::Result::Create(StatusCode::DBError, ERROR_DB_SELECT_CATEGORY);
         }
 
-        Renderer_CategoryTable::Render(rows);
+        Renderer_Generic::Render(rows);
         return em::action_handler::Result::Success();
     }
 
@@ -218,7 +221,23 @@ namespace em::action_handler::cli
             return em::action_handler::Result::Create(StatusCode::DBError, ERROR_DB_SELECT_TAG);
         }
 
-        Renderer_CategoryTable::Render(rows);
+        Renderer_Generic::Render(rows);
+        return em::action_handler::Result::Success();
+    }
+
+    // protected
+    em::action_handler::ResultSPtr List::ListReminders()
+    {
+        std::vector<db::Model> rows;
+
+        auto table = databaseMgr.GetTable("reminders");
+        if (!table->Select(rows))
+        {
+            printf("\nFailed to fetch reminders!");
+            return em::action_handler::Result::Create(StatusCode::DBError, "Failed to fetch reminders!s");
+        }
+
+        Renderer_Generic::Render(rows);
         return em::action_handler::Result::Success();
     }
 

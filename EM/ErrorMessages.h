@@ -11,6 +11,7 @@ constexpr auto ERROR_DB_INSERT_EXPENSE              = "Failed to add Expense: '{
 constexpr auto ERROR_DB_UPDATE_EXPENSE              = "Failed to update Expense: '{}'";
 constexpr auto ERROR_DB_REMOVE_EXPENSE              = "Failed to remove Expense: '{}'";
 constexpr auto ERROR_DB_INSERT_TAG                  = "Failed to add Tag: '{}'";
+constexpr auto ERROR_DB_INSERT_REMINDER				= "Failed to add Reminder: '{}'";
 
 // Functional
 constexpr auto ERROR_CATEGORY_DOES_NOT_EXIST        = "Category does not exist: '{}'";

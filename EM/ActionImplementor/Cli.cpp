@@ -47,6 +47,7 @@ namespace em::action_impl
         RegisterHandler<em::action_handler::cli::AddTags>(em::CmdType::AddTags);
         RegisterHandler<em::action_handler::cli::AddAccount>(em::CmdType::AddAccount);
         RegisterHandler<em::action_handler::cli::RemoveAccount>(em::CmdType::RemoveAccount);
+        RegisterHandler<em::action_handler::cli::AddReminder>(em::CmdType::AddReminder);
     }
 
     //public

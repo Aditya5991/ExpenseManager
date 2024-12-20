@@ -10,6 +10,10 @@ namespace utils::string
 
     void Trim(std::string& s);
 
+    std::string ToLower(const std::string& str);
+
+    std::string ToUpper(const std::string& str);
+
     void Format(std::string& unformatedString, const std::vector<std::string>& mappings);
 
     std::string Format(const std::string& unformatedString, const std::vector<std::string>& mappings);

@@ -14,6 +14,7 @@ DateTime::DateTime(tm t, char separator)
     , m_Year(t.tm_year + 1900)
     , m_Separator(separator)
 {
+    m_DayName = GetDayNameFromInteger(t.tm_wday);
 }
 
 DateTime::DateTime(int year, int month, int day, char separator)
@@ -97,10 +98,7 @@ bool DateTime::operator==(const DateTime& other) const
 {
     return (other.GetYear() == GetYear() &&
             other.GetMonth() == GetMonth() &&
-            other.GetDay() == GetDay() &&
-            other.GetHour() == GetHour() &&
-            other.GetMinute() == GetMinute() &&
-            other.GetSecond() == GetSecond());
+            other.GetDay() == GetDay());
 }
 
 std::string DateTime::AsString(bool useTime) const
@@ -184,5 +182,93 @@ std::string DateTime::GetThisYear()
     int year = GetNow().GetYear();
     return (year < 10 ? "0" + std::to_string(year) : std::to_string(year));
 }
+
+bool DateTime::IsValidDateString(const std::string& inputDate, char separator)
+{
+    try
+    {
+        int year = -1, month = -1, day = -1;
+        std::stringstream ss(inputDate);
+        char dash; // to read the separator character
+        ss >> year >> dash >> month >> dash >> day;
+
+        if (year < 0 || month < 0 || day < 0)
+            return false;
+    }
+    catch (std::exception& ex)
+    {
+        (void*)(&ex);
+        return false;
+    }
+
+    return true;
+}
+
+bool DateTime::IsValidMonthName(const std::string& monthName)
+{
+    if (monthName == "January" ||
+        monthName == "Feruary" ||
+        monthName == "March" ||
+        monthName == "April" ||
+        monthName == "May" ||
+        monthName == "June" ||
+        monthName == "July" ||
+        monthName == "August" ||
+        monthName == "September" ||
+        monthName == "October" ||
+        monthName == "November" ||
+        monthName == "December")
+        return true;
+
+    return false;
+}
+
+bool DateTime::IsValidDayName(const std::string& dayName)
+{
+    if (dayName == "Sunday" ||
+        dayName == "Monday" ||
+        dayName == "Tuesday" ||
+        dayName == "Wednesday" ||
+        dayName == "Thursday" ||
+        dayName == "Friday" ||
+        dayName == "Saturday")
+        return true;
+
+    return false;
+}
+
+std::string DateTime::GetDayNameFromInteger(int day)
+{
+    switch (day)
+    {
+    case 0:
+        return "Sunday";
+    case 1:
+        return "Monday";
+    case 2:
+        return "Tuesday";
+    case 3:
+        return "Wednesday";
+    case 4:
+        return "Thursday";
+    case 5:
+        return "Friday";
+    case 6:
+        return "Saturday";
+    }
+
+    throw std::exception(std::format("Invalid Day: {}", day).c_str());
+}
+
+bool DateTime::IsValidMonth(int month)
+{
+    return month >= 0 && month <= 12;
+}
+
+bool DateTime::IsValidDay(int day)
+{
+    return day >= 0 && day <= 31;
+}
+
 
 END_NAMESPACE_DB

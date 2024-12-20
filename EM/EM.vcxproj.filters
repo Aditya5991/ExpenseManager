@@ -126,6 +126,9 @@
     <ClCompile Include="ActionImplementor\Cli.cpp">
       <Filter>Source Files\ActionImplementor</Filter>
     </ClCompile>
+    <ClCompile Include="ActionHandlers\Cli\AddReminder.cpp">
+      <Filter>Source Files\ActionHandlers\CLI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Scope.txt">
@@ -261,6 +264,9 @@
     </ClInclude>
     <ClInclude Include="ActionImplementor\Cli.h">
       <Filter>Source Files\ActionImplementor</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionHandlers\Cli\AddReminder.h">
+      <Filter>Source Files\ActionHandlers\CLI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
