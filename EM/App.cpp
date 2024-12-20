@@ -58,7 +58,7 @@ namespace em::app
 		}
 		catch (std::exception& e)
 		{
-			printf("\nFailed to Inititlize Database!");
+			printf("\nFailed to Inititlize Database! Exception: %s", e.what());
 			return false;
 		}
 

@@ -145,6 +145,9 @@ namespace em::action_handler::cli
             if (endDate < startDate)
                 return Result::GeneralFailure("StartDate cannot be greater than EndDate!");
 
+            std::vector<std::string> rangeVec = { startDate.AsString(), endDate.AsString()};
+            finalCondition.Add(new db::Condition("date", rangeVec, db::Condition::Type::BETWEEN, db::Condition::RelationshipType::AND));
+
             return ProcessDBTableWithDateRange(finalCondition, orderBy, startDate, endDate, showTags, showAccount, showLocation);
         }
 
@@ -359,17 +362,8 @@ namespace em::action_handler::cli
             if (!expenseTable->Select(rows, cond, orderBy))
                 return Result::Create(StatusCode::DBError, "Failed to retrieve from table!");
 
-            std::vector<db::Model> rowsWithinRange;
-            std::for_each(rows.begin(), rows.end(), 
-                [&](const db::Model& row) 
-                {
-                    const db::DateTime& dateTime = row.at("date").asDateTime();
-                    if (startDate <= dateTime && dateTime <= endDate)
-                        rowsWithinRange.push_back(row);
-                });
-
             // sort according to price, highest to lowest
-            std::sort(rowsWithinRange.begin(), rowsWithinRange.end(),
+            std::sort(rows.begin(), rows.end(),
                 [](db::Model& e1, db::Model& e2)
                 {
                     return e1["date"].asDateTime() < e2["date"].asDateTime();
@@ -378,13 +372,13 @@ namespace em::action_handler::cli
             const std::string& currentAccountName = em::account::Manager::GetInstance().GetCurrentAccountName();
 
             double totalExpense = 0.0;
-            std::for_each(rowsWithinRange.begin(), rowsWithinRange.end(), 
+            std::for_each(rows.begin(), rows.end(), 
                 [&totalExpense](const db::Model& row) 
                 {
                     totalExpense += row.at("price").asDouble(); 
                 });
 
-            Renderer_ExpenseTable::Render(currentAccountName, rowsWithinRange, totalExpense, showTags, showAccount, showLocation);
+            Renderer_ExpenseTable::Render(currentAccountName, rows, totalExpense, showTags, showAccount, showLocation);
             return Result::Success();
         }
         catch (std::exception& ex)

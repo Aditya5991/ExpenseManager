@@ -10,6 +10,18 @@ Condition::Condition(
     Type type, 
     RelationshipType relationshipType)
     : m_ParameterName(name)
+    , m_ParameterValue(std::vector<std::string>{ value })
+    , m_Type(type)
+    , m_RelationshipType(relationshipType)
+{
+}
+
+Condition::Condition(
+    const std::string& name, 
+    const std::vector<std::string>& value, 
+    Type type, 
+    RelationshipType relationshipType)
+    : m_ParameterName(name)
     , m_ParameterValue(value)
     , m_Type(type)
     , m_RelationshipType(relationshipType)
@@ -51,9 +63,20 @@ std::string Condition::ToString() const
             break;
         case Type::NOT_LIKE:
             oper = " NOT LIKE ";
+        case Type::BETWEEN:
+            oper = " BETWEEN ";
             break;
         }
-        oss << GetName() << oper << "'" << GetValue() << "'";
+
+        if (GetType() == Type::BETWEEN)
+        {
+            oss << GetName() << oper << GetValueInDbFormat(GetValue().front()) << " AND " << GetValueInDbFormat(GetValue().back());
+        }
+        else
+        {
+            oss << GetName() << oper << GetValueInDbFormat(GetValue().front());
+        }
+
         return oss.str();
     }
 
@@ -75,6 +98,11 @@ std::string Condition::ToString() const
 void Condition::PopBack()
 {
     m_Conditions.pop_back();
+}
+
+std::string Condition::GetValueInDbFormat(const std::string& value) const
+{
+    return std::format("'{}'", value);
 }
 
 END_NAMESPACE_DB
