@@ -63,6 +63,7 @@ std::string Condition::ToString() const
             break;
         case Type::NOT_LIKE:
             oper = " NOT LIKE ";
+            break;
         case Type::BETWEEN:
             oper = " BETWEEN ";
             break;

@@ -307,10 +307,11 @@ namespace em
 
                 if (m_ShowTags)
                 {
-                    auto temp = row.at("tags");
-                    add(row.at("tags").asString());
+                    const db::DBValue& tag = row.at("tags");
+                    if(!tag.IsEmpty() && tag.IsString())
+                        add(row.at("tags").asString());
                 }
-                if(m_ShowAccount)
+                if (m_ShowAccount)
                     add(accountName);
 
                 endOfRow();

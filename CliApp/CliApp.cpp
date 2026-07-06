@@ -129,7 +129,7 @@ public:
 
     virtual void Start() override
     {
-        UpdateReminders();
+        //UpdateReminders();
 
         bool quit = false;
         while (!quit)

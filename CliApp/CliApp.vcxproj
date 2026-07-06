@@ -117,8 +117,8 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>DBHandler.lib;CLIParser.lib;EM-lib.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(OutDir)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>cpr\libzippp_static.lib;DBHandler.lib;CLIParser.lib;EM-lib.lib;cpr\libcurl-d_imp.lib;cpr\cpr.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(OutDir);$(SolutionDir)binaries</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>if not exist $(SolutionDir)$(Platform)\$(Configuration)\Resources mkdir $(SolutionDir)$(Platform)\$(Configuration)\Resources

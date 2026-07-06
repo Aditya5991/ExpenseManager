@@ -67,6 +67,8 @@ Database::Database(const char* apFilename,
 {
     sqlite3* handle;
     const int ret = sqlite3_open_v2(apFilename, &handle, aFlags, apVfs);
+    sqlite3_exec(handle, "PRAGMA wal_checkpoint(FULL);", nullptr, nullptr, nullptr);
+    sqlite3_exec(handle, "PRAGMA journal_mode=DELETE;", nullptr, nullptr, nullptr);
     mSQLitePtr.reset(handle);
     if (SQLITE_OK != ret)
     {

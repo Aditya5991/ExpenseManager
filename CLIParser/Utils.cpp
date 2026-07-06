@@ -27,7 +27,7 @@ bool IsInteger(const std::string& str)
 bool IsAlphaNumeric(const std::string& str)
 {
     return IsDouble(str) || std::find_if(str.begin(), str.end(),
-        [](char c) { return !(isalnum(c) || (c == ' ')); }) == str.end();
+        [](char c) { return !(isalnum(c) || (c == ' ') || (c == '/')); }) == str.end();
 }
 
 bool IsDate(const std::string& str)
